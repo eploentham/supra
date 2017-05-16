@@ -2,17 +2,17 @@
 
 //configure constants
 //$conn = mysqli_connect("localhost",'at_healthcare','bangna','cy!C51x3');
-$databaseName="at_healthcare";
+$databaseName="bangna";
 $hostDB="localhost";
 $userDB="root";
 $passDB="";
-session_start();
+//session_start();
 //ob_start();
 //$_SESSION['at_healthcare.user']="";
 
-//$userDB="athealtcare";
-//$passDB="Srb!g302";
-//$hostDB="mysql-5.5.chaiyohosting.com";
+$userDB="bangna1";
+$passDB="yzJ62r!1";
+$hostDB="mysql-5.5.chaiyohosting.com";
 $acompType = array();
 $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 mysqli_set_charset($conn, "UTF8");
