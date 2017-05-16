@@ -27,6 +27,10 @@ if ($rComp=mysqli_query($conn,$sql)){
     $hoTele = strval($aHosp["tele"]);
     $hoEmail = strval($aHosp["email"]);
     $hoTaxId = strval($aHosp["tax_id"]);
+    $hoContactName1 = strval($aHosp["contact_name1"]);
+    $hoContactTel1 = strval($aHosp["contact_tel1"]);
+    $hoContactName2 = strval($aHosp["contact_name2"]);
+    $hoContactTel2 = strval($aHosp["contact_tel2"]);
 }
 $rComp->free();
 mysqli_close($conn);
@@ -66,7 +70,7 @@ mysqli_close($conn);
 <div class="alert alert-block alert-success" id="hospAlert">
     <a class="close" data-dismiss="alert" href="#">×</a>
     <h4 class="alert-heading"><i class="fa fa-check-square-o"></i> Check validation!</h4>
-    <p id="custVali">
+    <p id="hospVali">
             You may also check the form validation by clicking on the form action button. Please try and see the results below!
     </p>
 </div>
@@ -94,7 +98,7 @@ mysqli_close($conn);
                 -->
                 <header>
                     <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-                    <h2>รายละเอียด ลูกค้า </h2>				
+                    <h2>รายละเอียด โรงพยาบาล </h2>				
 
                 </header>
 
@@ -112,14 +116,23 @@ mysqli_close($conn);
 
                         <form action="" id="smart-form-register" class="smart-form">
                             <fieldset>
-                                <section>
-                                    <label class="label">ชื่อโรงพยาบาล</label>
-                                    <label class="input"> <i class="icon-append fa fa-user"></i>
-                                        <input type="text" name="cuNameT" id="cuNameT" value="<?php echo $hoNameT;?>" placeholder="ชื่อโรงพยาบาล">
-                                        <input type="hidden" name="hoId" id="hoId" value="<?php echo $hoId;?>">
-                                        <input type="hidden" name="hoCode" id="hoCode" value="<?php echo $hoCode;?>">
-                                        <b class="tooltip tooltip-bottom-right">Needed to enter the website</b> </label>
-                                </section>
+                                <div class="row">
+                                    <section class="col col-4">
+                                        <label class="label">code</label>
+                                        <label class="input"> <i class="icon-append fa fa-lock"></i>
+                                            <input type="text" name="hoCode" id="hoCode" placeholder="รหัส">
+                                            <b class="tooltip tooltip-bottom-right">Don't forget your password</b> </label>
+                                    </section>
+                                    <section class="col col-8">
+                                        <label class="label">ชื่อโรงพยาบาล</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="cuNameT" id="cuNameT" value="<?php echo $hoNameT;?>" placeholder="ชื่อโรงพยาบาล">
+                                            <input type="hidden" name="hoId" id="hoId" value="<?php echo $hoId;?>">
+                                            <input type="hidden" name="hoCode" id="hoCode" value="<?php echo $hoCode;?>">
+                                            <b class="tooltip tooltip-bottom-right">Needed to enter the website</b> </label>
+                                    </section>
+                                </div>
+                                
 
                                 <section >
                                     <label class="label">ที่อยู่</label>
@@ -177,6 +190,30 @@ mysqli_close($conn);
                                         <label class="label">เลขที่ผู้เสียภาษี</label>
                                         <label class="input"> <i class="icon-append fa fa-envelope-o"></i>
                                             <input type="text" name="hoTaxId" id="hoTaxId" placeholder="เลขที่ผู้เสียภาษี" value="<?php echo $hoTaxId;?>">
+                                            <b class="tooltip tooltip-bottom-right">Needed to verify your account</b> </label>
+                                    </section >
+                                </div>
+                                <div class="row">
+                                    <section class="col col-3">
+                                        <label class="label">ชื่อผู้ติดต่อ1</label>
+                                        <label class="input"> <i class="icon-prepend fa fa-phone"></i>
+                                            <input type="text" name="hoContactName1" id="hoContactName1" placeholder="ชื่อผู้ติดต่อ1"  value="<?php echo $hoTele;?>"></label>
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="label">เบอร์ผู้ติดต่อ1</label>
+                                        <label class="input"> <i class="icon-append fa fa-envelope-o"></i>
+                                            <input type="tel" name="hoContactTel1" id="hoContactTel1" placeholder="เบอร์ผู้ติดต่อ1" data-mask="(999) 999-9999" value="<?php echo $hoEmail;?>">
+                                            <b class="tooltip tooltip-bottom-right">Needed to verify your account</b> </label>
+                                    </section >                                
+                                    <section class="col col-3">
+                                        <label class="label">ชื่อผู้ติดต่อ2</label>
+                                        <label class="input"> <i class="icon-prepend fa fa-phone"></i>
+                                            <input type="text" name="hoContactName2" id="hoContactName2" placeholder="ชื่อผู้ติดต่อ2"  value="<?php echo $hoTele;?>"></label>
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="label">เบอร์ผู้ติดต่อ2</label>
+                                        <label class="input"> <i class="icon-append fa fa-envelope-o"></i>
+                                            <input type="tel" name="hoContactTel2" id="hoContactTel2" placeholder="เบอร์ผู้ติดต่อ2" data-mask="(999) 999-9999" value="<?php echo $hoEmail;?>">
                                             <b class="tooltip tooltip-bottom-right">Needed to verify your account</b> </label>
                                     </section >
                                 </div>
@@ -347,7 +384,7 @@ mysqli_close($conn);
         $("#hoProv").change(getAmphur);
         $("#hoAmphur").change(getDistrict);
         $("#hoDistrict").change(getZipcode);
-        $("#btnSave").click(saveCust);
+        $("#btnSave").click(saveHospital);
         
         function getAmphur(){
             //alert("aaaa");
@@ -414,7 +451,7 @@ mysqli_close($conn);
                 }
             });
         }
-        function saveCust(){
+        function saveHospital(){
             //alert('aaaaa');
             $.ajax({ 
                 type: 'GET', url: 'saveData.php', contentType: "application/json", dataType: 'text', 
@@ -429,7 +466,11 @@ mysqli_close($conn);
                     ,'amphur_id': $("#hoAmphur").val()
                     ,'district_id': $("#hoDistrict").val()
                     ,'zipcode': $("#hoZipcode").val()
-                    ,'flagPage': "customer" }, 
+                    ,'contact_name1': $("#hoContactName1").val()
+                    ,'contact_tel1': $("#hnContactTel1").val()
+                    ,'contact_name2': $("#hoContactName2").val()
+                    ,'contact_tel2': $("#hnContactTel2").val()
+                    ,'flagPage': "hospital" }, 
                 success: function (data) {
                     //alert('bbbbb'+data);
                     var json_obj = $.parseJSON(data);

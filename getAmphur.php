@@ -156,7 +156,7 @@ if($_GET['flagPage']=="amphur"){
             while($row = mysqli_fetch_array($result)){
                 $tmp["staff_name_t"] = $row["staff_name_t"];
                 $tmp["staff_lastname_t"] = $row["staff_lastname_t"];
-                $_SESSION['at_user_staff_name'] = $tmp["staff_name_t"]."".$tmp["staff_lastname_t"];
+                $_SESSION['bn_user_staff_name'] = $tmp["staff_name_t"]."".$tmp["staff_lastname_t"];
                 //$_SESSION['at_user'] = "";
                 //$tmp["price"] = $row["price"];
                 //$tmp["unit_id"] = $row["unit_id"];

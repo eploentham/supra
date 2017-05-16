@@ -2,7 +2,7 @@
 //initilize the page
 session_start();
 require_once("inc/init.php");
-$page = $_SESSION["at_page"];
+$page = $_SESSION["bn_page"];
 ?>
 <!-- ==========================CONTENT STARTS HERE ========================== -->
 <!-- possible classes: minified, no-right-panel, fixed-ribbon, fixed-header, fixed-width-->
@@ -64,7 +64,7 @@ $page = $_SESSION["at_page"];
             type: 'GET', url: 'getAmphur.php', contentType: "application/json", dataType: 'text', 
             data: { 'flagPage':"login" }, 
             success: function (data) {
-                var page = '<?php echo $_SESSION["at_page"]; ?>';
+                var page = '<?php echo $_SESSION["bn_page"]; ?>';
                 //alert('bbbbb'+data+page);
                 var json_obj = $.parseJSON(data);
                 for (var i in json_obj){

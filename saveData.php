@@ -119,50 +119,65 @@ if($_GET["flagPage"] === "company"){
                 .", date_modi = now() "
                 ."Where cust_id = '".$cust_id."'";
     }
-}else if($_GET["flagPage"] === "vendor"){
-    $vend_id=$_GET["vend_id"];
-    $vend_code=$_GET["vend_code"];
-    $vend_name_t=$_GET["vend_name_t"];
-    $vend_address_t=$_GET["vend_address_t"];
-    $tele=$_GET["tele"];
-    $email=$_GET["email"];
-    $tax_id=$_GET["tax_id"];
-    $prov_id=$_GET["prov_id"];
-    $amphur_id=$_GET["amphur_id"];
-    $district_id=$_GET["district_id"];
-    $zipcode=$_GET["zipcode"];
+}else if($_GET["flagPage"] === "supra"){
+    $supra_id=$_GET["supra_id"];
+    $supra_doc=$_GET["supra_doc"];
+    $input_date=$_GET["input_date"];
+    $supra_date=$_GET["supra_date"];
+    $hn=$_GET["hn"];
+    $pat_id=$_GET["pat_id"];
+    $paid_type_name=$_GET["paid_type_name"];
+    $supra_type_id=$_GET["supra_type_id"];
+    $pat_name=$_GET["pat_name"];
+    $pat_surname=$_GET["pat_surname"];
+    $branch_id=$_GET["branch_id"];
+    $hosp_id=$_GET["hosp_id"];
+    $doctor_name=$_GET["doctor_name"];
+    $paid=$_GET["paid"];
+    $remark=$_GET["remark"];
+    $flag_new=$_GET["flag_new"];
     if(($_GET["flag_new"]==="-")|| ($_GET["flag_new"]==="new")){
-        $sql = "Select count(1) as cnt From b_vendor ";
-        if ($result=mysqli_query($conn,$sql) or die(mysqli_error())){
-            $ok="1";
-            while($row = mysqli_fetch_array($result)){
-                if(is_null($row["cnt"])){
-                    $cnt = "0";
-                }else{
-                    $cnt = $row["cnt"];
-                }
-                $cnt = intval($cnt)+1;
-                $cnt = "000".$cnt;
-            }
-            $doc = "V".$year. substr($cnt, strlen($cnt)-3);
-        }
+//        $sql = "Select count(1) as cnt From b_vendor ";
+//        if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
+//            $ok="1";
+//            while($row = mysqli_fetch_array($result)){
+//                if(is_null($row["cnt"])){
+//                    $cnt = "0";
+//                }else{
+//                    $cnt = $row["cnt"];
+//                }
+//                $cnt = intval($cnt)+1;
+//                $cnt = "000".$cnt;
+//            }
+//            $doc = "V".$year. substr($cnt, strlen($cnt)-3);
+//        }
 //    if(($_GET["vend_id"]==="-")|| ($_GET["vend_id"]==="")){
-        $sql="Insert Into b_vendor(vend_id, vend_code, vend_name_t, vend_address_t, tele, email, tax_id, active, date_create) "
-                ."Values(UUID(),'".$doc."','".$vend_name_t."','".$vend_address_t."','".$tele."','".$email."','".$tax_id."','1',now())";
+        $sql="Insert Into t_supra(supra_id, supra_doc, input_date, supra_date "
+                .", hn, pat_id, paid_type_name, supra_type_id "
+                .", pat_name, pat_surname, branch_id, hosp_id, "
+                ."doctor_name, paid, remark, active, date_create) "
+                ."Values(UUID(),'".$supra_doc."','".$input_date."','".$supra_date."','"
+                .$hn."','".$pat_id."','".$paid_type_name."','".$supra_type_id."','"
+                .$pat_name."','".$pat_surname."','".$branch_id."','".$hosp_id."','"
+                .$doctor_name."','".$paid."','".$remark."','1',now())";
     }else{
-        $sql="Update b_vendor "
-                ."Set vend_code = '".$vend_code."' "
-                .", vend_name_t = '".$vend_name_t."' "
-                .", vend_address_t = '".$vend_address_t."' "
-                .", tele = '".$tele."' "
-                .", email = '".$email."' "
-                .", tax_id = '".$tax_id."' "
-                .", prov_id = '".$prov_id."' "
-                .", amphur_id = '".$amphur_id."' "
-                .", district_id = '".$district_id."' "
-                .", zipcode = '".$zipcode."' "
+        $sql="Update t_supra "
+                ."Set supra_doc = '".$supra_doc."' "
+                .", input_date = '".$input_date."' "
+                .", supra_date = '".$supra_date."' "
+                .", hn = '".$hn."' "
+                .", pat_id = '".$pat_id."' "
+                .", paid_type_name = '".$paid_type_name."' "
+                .", supra_type_id = '".$supra_type_id."' "
+                .", pat_name = '".$pat_name."' "
+                .", pat_surname = '".$pat_surname."' "
+                .", branch_id = '".$branch_id."' "
+                .", hosp_id = '".$hosp_id."' "
+                .", doctor_name = '".$doctor_name."' "
+                .", paid = ".$paid." "
+                .", remark = '".$$remark."' "                
                 .", date_modi = now() "
-                ."Where vend_id = '".$vend_id."'";
+                ."Where supra_id = '".$supra_id."'";
     }
 }else if($_GET["flagPage"] === "goodsType"){
     $goods_type_id=$_GET["goods_type_id"];

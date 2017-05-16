@@ -603,20 +603,8 @@ $page_nav = array(
         "icon" => "fa-home",
         "sub" => array(
             "recStock" => array(
-                "title" => "รับสินค้าเข้า",
-                "url" => "goodsRecView.php"
-            ),
-            "drawStock" => array(
-                "title" => "เบิกตัดจ่ายสินค้า",
-                "url" => "goodsDrawView.php"
-            ),
-            "returnStock" => array(
-                "title" => "คืนสินค้า",
-                "url" => "goodsReturnView.php"
-            ),
-            "goods" => array(
-                "title" => "รายการสินค้าทั้งหมด",
-                "url" => "goodsView.php"
+                "title" => "ป้อนข้อมูล Supra",
+                "url" => "supraView.php"
             )
         )
     ),

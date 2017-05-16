@@ -96,15 +96,15 @@ mysqli_close($conn);
                             <div class="widget-body no-padding">
                                 <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
                                     <thead>			                
-                                            <tr>
-                                                    <th data-hide="phone">Code</th>
-                                                    <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> ชื่อโรงพยาบาล</th>
-                                                    <th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> ที่อยู่</th>
-                                                    <th>เบอร์</th>
-                                                    <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Email</th>
-                                                    <th data-hide="phone,tablet">tax id</th>
-                                                    <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ติดต่อ</th>
-                                            </tr>
+                                        <tr>
+                                            <th data-hide="phone">Code</th>
+                                            <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> ชื่อโรงพยาบาล</th>
+                                            <th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> ที่อยู่</th>
+                                            <th>เบอร์</th>
+                                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Email</th>
+                                            <th data-hide="phone,tablet">tax id</th>
+                                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ติดต่อ</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                             <?php echo $trCust;?>
