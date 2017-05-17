@@ -15,6 +15,7 @@ if(isset($_GET["hospId"])){
 }
 $hoProvName1="";
 $hoAmpName1="";
+$oProv1 = $oProv;
 $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 mysqli_set_charset($conn, "UTF8");
 $sql="Select ho.*, prov.prov_name, amp.amphur_name, dis.district_name "
@@ -45,11 +46,12 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
     $hoContactTel1 = ($aHosp["contact_tel1"]);
     $hoContactName2 = ($aHosp["contact_name2"]);
     $hoContactTel2 = ($aHosp["contact_tel2"]);
-    if(isset($hoProvName)){
-        $hoProvName1 = "<option value='0' disabled=''>เลือกจังหวัด</option>";
-        $hoProvName1 .= "<option selected='true' value='".$hoProvId."'>".$hoProvName."</option>";
-    }else{
-        $hoProvName1 = $oProv;
+    if(isset($hoProvId)){
+        $cnt=1;
+        $bb = strval($aHosp["prov_id"]);
+        $aa = '<option selected value='.$bb;
+        $oProv1 = str_replace("selected=''", "", $oProv1);
+        $oProv1 = str_replace('<option value='.$bb, $aa, $oProv1,$cnt);
     }
     if(isset($hoAmpName)){
         $hoAmpName1 = "<option value='0' disabled=''>เลือกจังหวัด</option>";
@@ -60,6 +62,7 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
 }else{
     echo mysqli_error($conn);
 }
+
 $rComp->free();
 mysqli_close($conn);
 ?>
@@ -148,7 +151,7 @@ mysqli_close($conn);
                                     <section class="col col-4">
                                         <label class="label">code</label>
                                         <label class="input"> <i class="icon-append fa fa-lock"></i>
-                                            <input type="text" name="hoCode" id="hoCode" placeholder="รหัส1" value="<?php echo $hoCode;?>">
+                                            <input type="text" name="hoCode" id="hoCode" placeholder="รหัส1" value="<?php echo $oProv1;?>">
                                             <b class="tooltip tooltip-bottom-right">Don't forget your password</b> </label>
                                     </section>
                                     <section class="col col-8">
@@ -190,7 +193,7 @@ mysqli_close($conn);
                                         <label class="label">จังหวัด</label>
                                         <label class="select">
                                             <select name="hoProv" id="hoProv">
-                                                <?php echo $hoProvName1;?>
+                                                <?php echo $oProv1;?>
                                             </select> <i></i> </label>
                                     </section>
 

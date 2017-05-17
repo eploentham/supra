@@ -134,7 +134,7 @@ if($_GET['flagPage']=="amphur"){
     $sql="Select * From b_staff  ";
     //$result = mysqli_query($con, $SQL)or die(mysqli_error($connection));
     //$result = mysqli_query($con,$Query) or die(mysqli_error());  
-    if ($result=mysqli_query($conn,$sql) or die(mysqli_error())){
+    if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         if(!$result){
             $ok="0";
             $err= mysqli_error();
@@ -171,7 +171,7 @@ if($_GET['flagPage']=="amphur"){
     $draDate1=substr($_GET["draw_date1"],strlen($_GET["draw_date1"])-4)."-".substr($_GET["draw_date1"],3,2)."-".substr($_GET["draw_date1"],0,2);
     $draDate2=substr($_GET["draw_date2"],strlen($_GET["draw_date2"])-4)."-".substr($_GET["draw_date2"],3,2)."-".substr($_GET["draw_date2"],0,2);
     $sql="Select draw_id,draw_doc, ifnull(description,'-') as description From t_goods_draw Where draw_date >= '".$draDate1."' and draw_date <= '".$draDate2."'  Order By draw_doc";
-    if ($result=mysqli_query($conn,$sql) or die(mysqli_error())){
+    if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         $ok="";
         $err="";
         if(!$result){
@@ -199,7 +199,7 @@ if($_GET['flagPage']=="amphur"){
     }
 }else if($_GET['flagPage']=="gen_rec"){
     $sql = "Select count(1) as cnt From t_goods_rec ";
-    if ($result=mysqli_query($conn,$sql) or die(mysqli_error())){
+    if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         $ok="";
         $err="";
         if(!$result){
