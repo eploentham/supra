@@ -13,24 +13,52 @@ if(isset($_GET["hospId"])){
 }else{
     $hoId="";
 }
+$hoProvName1="";
+$hoAmpName1="";
 $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 mysqli_set_charset($conn, "UTF8");
-$sql="Select * From b_hospital Where hosp_id = '".$hoId."' ";
+$sql="Select ho.*, prov.prov_name, amp.amphur_name, dis.district_name "
+        ."From b_hospital ho "
+        ."Left Join provinces prov on ho.prov_id = prov.prov_id "
+        ."Left join amphures amp on ho.amphur_id = amp.amphur_id "
+        ."Left Join districts dis on ho.district_id = dis.district_id "
+        ."Where hosp_id = '".$hoId."' ";
 //echo "<script> alert('aaaaa'); </script>";
 //$rComp = mysqli_query($conn,"Select * From b_company Where comp_id = '1' ");
-if ($rComp=mysqli_query($conn,$sql)){
+//if ($rComp=mysqli_query($conn,$sql)){
+if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
     $aHosp = mysqli_fetch_array($rComp);
     $hoId = $aHosp["hosp_id"];
-    $hoCode = strval($aHosp["hosp_code"]);
-    $hoNameT = strval($aHosp["hosp_name_t"]);
-    $hoAddress = strval($aHosp["hosp_address_t"]);
-    $hoTele = strval($aHosp["tele"]);
-    $hoEmail = strval($aHosp["email"]);
-    $hoTaxId = strval($aHosp["tax_id"]);
-    $hoContactName1 = strval($aHosp["contact_name1"]);
-    $hoContactTel1 = strval($aHosp["contact_tel1"]);
-    $hoContactName2 = strval($aHosp["contact_name2"]);
-    $hoContactTel2 = strval($aHosp["contact_tel2"]);
+    $hoCode = ($aHosp["hosp_code"]);
+    $hoNameT = ($aHosp["hosp_name_t"]);
+    $hoAddress = ($aHosp["hosp_address_t"]);
+    $hoTele = ($aHosp["tele"]);
+    $hoZipcode = ($aHosp["zipcode"]);
+    $hoProvId = ($aHosp["prov_id"]);
+    $hoProvName = ($aHosp["prov_name"]);
+    $hoAmpName = ($aHosp["amphur_name"]);
+    $hoDisName = ($aHosp["district_name"]);
+    $hoAmphurId = ($aHosp["amphur_id"]);
+    $hoDistrictId = ($aHosp["district_id"]);
+    $hoTaxId = ($aHosp["tax_id"]);
+    $hoContactName1 = ($aHosp["contact_name1"]);
+    $hoContactTel1 = ($aHosp["contact_tel1"]);
+    $hoContactName2 = ($aHosp["contact_name2"]);
+    $hoContactTel2 = ($aHosp["contact_tel2"]);
+    if(isset($hoProvName)){
+        $hoProvName1 = "<option value='0' disabled=''>เลือกจังหวัด</option>";
+        $hoProvName1 .= "<option selected='true' value='".$hoProvId."'>".$hoProvName."</option>";
+    }else{
+        $hoProvName1 = $oProv;
+    }
+    if(isset($hoAmpName)){
+        $hoAmpName1 = "<option value='0' disabled=''>เลือกจังหวัด</option>";
+        $hoAmpName1 .= "<option selected='true' value='".$hoProvId."'>".$hoProvName."</option>";
+    }else{
+        $hoAmpName1 = $oProv;
+    }
+}else{
+    echo mysqli_error($conn);
 }
 $rComp->free();
 mysqli_close($conn);
@@ -120,13 +148,13 @@ mysqli_close($conn);
                                     <section class="col col-4">
                                         <label class="label">code</label>
                                         <label class="input"> <i class="icon-append fa fa-lock"></i>
-                                            <input type="text" name="hoCode" id="hoCode" placeholder="รหัส">
+                                            <input type="text" name="hoCode" id="hoCode" placeholder="รหัส1" value="<?php echo $hoCode;?>">
                                             <b class="tooltip tooltip-bottom-right">Don't forget your password</b> </label>
                                     </section>
                                     <section class="col col-8">
                                         <label class="label">ชื่อโรงพยาบาล</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="text" name="cuNameT" id="cuNameT" value="<?php echo $hoNameT;?>" placeholder="ชื่อโรงพยาบาล">
+                                            <input type="text" name="hoNameT" id="hoNameT" value="<?php echo $hoNameT;?>" placeholder="ชื่อโรงพยาบาล">
                                             <input type="hidden" name="hoId" id="hoId" value="<?php echo $hoId;?>">
                                             <input type="hidden" name="hoCode" id="hoCode" value="<?php echo $hoCode;?>">
                                             <b class="tooltip tooltip-bottom-right">Needed to enter the website</b> </label>
@@ -162,14 +190,14 @@ mysqli_close($conn);
                                         <label class="label">จังหวัด</label>
                                         <label class="select">
                                             <select name="hoProv" id="hoProv">
-                                                <?php echo $oProv;?>
+                                                <?php echo $hoProvName1;?>
                                             </select> <i></i> </label>
                                     </section>
 
                                     <section class="col col-6">
                                         <label class="label">รหัสไปรษณีย์</label>
                                         <label class="input"> <i class="icon-append fa fa-lock"></i>
-                                            <input type="text" name="hoZipcode" id="hoZipcode" placeholder="รหัสไปรษณีย์">
+                                            <input type="text" name="hoZipcode" id="hoZipcode" placeholder="รหัสไปรษณีย์" value="<?php echo $hoZipcode;?>">
                                             <b class="tooltip tooltip-bottom-right">Don't forget your password</b> </label>
                                     </section>
                                 </div>
@@ -197,23 +225,23 @@ mysqli_close($conn);
                                     <section class="col col-3">
                                         <label class="label">ชื่อผู้ติดต่อ1</label>
                                         <label class="input"> <i class="icon-prepend fa fa-phone"></i>
-                                            <input type="text" name="hoContactName1" id="hoContactName1" placeholder="ชื่อผู้ติดต่อ1"  value="<?php echo $hoTele;?>"></label>
+                                            <input type="text" name="hoContactName1" id="hoContactName1" placeholder="ชื่อผู้ติดต่อ1"  value="<?php echo $hoContactName1;?>"></label>
                                     </section>
                                     <section class="col col-3">
                                         <label class="label">เบอร์ผู้ติดต่อ1</label>
                                         <label class="input"> <i class="icon-append fa fa-envelope-o"></i>
-                                            <input type="tel" name="hoContactTel1" id="hoContactTel1" placeholder="เบอร์ผู้ติดต่อ1" data-mask="(999) 999-9999" value="<?php echo $hoEmail;?>">
+                                            <input type="tel" name="hoContactTel1" id="hoContactTel1" placeholder="เบอร์ผู้ติดต่อ1" data-mask="(999) 999-9999" value="<?php echo $hoContactTel1;?>">
                                             <b class="tooltip tooltip-bottom-right">Needed to verify your account</b> </label>
                                     </section >                                
                                     <section class="col col-3">
                                         <label class="label">ชื่อผู้ติดต่อ2</label>
                                         <label class="input"> <i class="icon-prepend fa fa-phone"></i>
-                                            <input type="text" name="hoContactName2" id="hoContactName2" placeholder="ชื่อผู้ติดต่อ2"  value="<?php echo $hoTele;?>"></label>
+                                            <input type="text" name="hoContactName2" id="hoContactName2" placeholder="ชื่อผู้ติดต่อ2"  value="<?php echo $hoContactName2;?>"></label>
                                     </section>
                                     <section class="col col-3">
                                         <label class="label">เบอร์ผู้ติดต่อ2</label>
                                         <label class="input"> <i class="icon-append fa fa-envelope-o"></i>
-                                            <input type="tel" name="hoContactTel2" id="hoContactTel2" placeholder="เบอร์ผู้ติดต่อ2" data-mask="(999) 999-9999" value="<?php echo $hoEmail;?>">
+                                            <input type="tel" name="hoContactTel2" id="hoContactTel2" placeholder="เบอร์ผู้ติดต่อ2" data-mask="(999) 999-9999" value="<?php echo $hoContactTel2;?>">
                                             <b class="tooltip tooltip-bottom-right">Needed to verify your account</b> </label>
                                     </section >
                                 </div>
@@ -457,8 +485,8 @@ mysqli_close($conn);
                 type: 'GET', url: 'saveData.php', contentType: "application/json", dataType: 'text', 
                 data: { 'hosp_id': $("#hoId").val()
                     ,'hosp_code': $("#hoCode").val()
-                    ,'hosp_name_t': $("#cuNameT").val()
-                    ,'hosp_address_t': $("#cuAddress").val()
+                    ,'hosp_name_t': $("#hoNameT").val()
+                    ,'hosp_address_t': $("#hoAddress").val()
                     ,'tele': $("#hoTele").val()
                     ,'email': $("#hoEmail").val()
                     ,'tax_id': $("#hoTaxId").val()
@@ -467,9 +495,9 @@ mysqli_close($conn);
                     ,'district_id': $("#hoDistrict").val()
                     ,'zipcode': $("#hoZipcode").val()
                     ,'contact_name1': $("#hoContactName1").val()
-                    ,'contact_tel1': $("#hnContactTel1").val()
+                    ,'contact_tel1': $("#hoContactTel1").val()
                     ,'contact_name2': $("#hoContactName2").val()
-                    ,'contact_tel2': $("#hnContactTel2").val()
+                    ,'contact_tel2': $("#hoContactTel2").val()
                     ,'flagPage': "hospital" }, 
                 success: function (data) {
                     //alert('bbbbb'+data);

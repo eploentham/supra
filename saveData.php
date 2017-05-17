@@ -75,11 +75,11 @@ if($_GET["flagPage"] === "company"){
                 .", date_modi = now() "
                 ."Where branch_id = '".$branch_id."'";
     }
-}else if($_GET["flagPage"] === "customer"){
-    $cust_id=$_GET["cust_id"];
-    $cust_code=$_GET["cust_code"];
-    $cust_name_t=$_GET["cust_name_t"];
-    $cust_address_t=$_GET["cust_address_t"];
+}else if($_GET["flagPage"] === "hospital"){
+    $hosp_id=$_GET["hosp_id"];
+    $hosp_code=$_GET["hosp_code"];
+    $hosp_name_t=$_GET["hosp_name_t"];
+    $hosp_address_t=$_GET["hosp_address_t"];
     $tele=$_GET["tele"];
     $email=$_GET["email"];
     $tax_id=$_GET["tax_id"];
@@ -87,28 +87,38 @@ if($_GET["flagPage"] === "company"){
     $amphur_id=$_GET["amphur_id"];
     $district_id=$_GET["district_id"];
     $zipcode=$_GET["zipcode"];
-    if(($_GET["cust_id"]==="-")|| ($_GET["cust_id"]==="")){
-        $sql = "Select count(1) as cnt From b_customer ";
-        if ($result=mysqli_query($conn,$sql) or die(mysqli_error())){
-            $ok="1";
-            while($row = mysqli_fetch_array($result)){
-                if(is_null($row["cnt"])){
-                    $cnt = "0";
-                }else{
-                    $cnt = $row["cnt"];
-                }
-                $cnt = intval($cnt)+1;
-                $cnt = "000".$cnt;
-            }
-            $doc = "C".$year. substr($cnt, strlen($cnt)-3);
-        }
-        $sql="Insert Into b_customer(cust_id, cust_code, cust_name_t, cust_address_t, tele, email, tax_id, active, date_create) "
-                ."Values(UUID(),'".$cust_code."','".$cust_name_t."','".$cust_address_t."','".$tele."','".$email."','".$tax_id."','1',now())";
+    $contact_name1=$_GET["contact_name1"];
+    $contact_tel1=$_GET["contact_tel1"];
+    $contact_name2=$_GET["contact_name2"];
+    $contact_tel2=$_GET["contact_tel2"];
+    if(($_GET["hosp_id"]==="-")|| ($_GET["hosp_id"]==="")){
+//        $sql = "Select count(1) as cnt From b_customer ";
+//        if ($result=mysqli_query($conn,$sql) or die(mysqli_error())){
+//            $ok="1";
+//            while($row = mysqli_fetch_array($result)){
+//                if(is_null($row["cnt"])){
+//                    $cnt = "0";
+//                }else{
+//                    $cnt = $row["cnt"];
+//                }
+//                $cnt = intval($cnt)+1;
+//                $cnt = "000".$cnt;
+//            }
+//            $doc = "C".$year. substr($cnt, strlen($cnt)-3);
+//        }
+        $sql="Insert Into b_hospital(hosp_id, hosp_code, hosp_name_t, hosp_address_t "
+                .", tele, email, tax_id,contact_name1 "
+                .", contact_tel1,contact_name2,contact_tel2,prov_id "
+                .",amphur_id,district_id,zipcode, active, date_create) "
+                ."Values(UUID(),'".$hosp_code."','".$hosp_name_t."','".$hosp_address_t."','"
+                .$tele."','".$email."','".$tax_id."','".$contact_name1."','"
+                .$contact_tel1."','".$contact_name2."','".$contact_tel2."','".$prov_id."','"
+                .$amphur_id."','".$district_id."','".$zipcode."','1',now())";
     }else{
-        $sql="Update b_customer "
-                ."Set cust_code = '".$cust_code."' "
-                .", cust_name_t = '".$cust_name_t."' "
-                .", cust_address_t = '".$cust_address_t."' "
+        $sql="Update b_hospital "
+                ."Set hosp_code = '".$hosp_code."' "
+                .", hosp_name_t = '".$hosp_name_t."' "
+                .", hosp_address_t = '".$hosp_address_t."' "
                 .", tele = '".$tele."' "
                 .", email = '".$email."' "
                 .", tax_id = '".$tax_id."' "
@@ -116,8 +126,12 @@ if($_GET["flagPage"] === "company"){
                 .", amphur_id = '".$amphur_id."' "
                 .", district_id = '".$district_id."' "
                 .", zipcode = '".$zipcode."' "
+                .", contact_name1 = '".$contact_name1."' "
+                .", contact_tel1 = '".$contact_tel1."' "
+                .", contact_name2 = '".$contact_name2."' "
+                .", contact_tel2 = '".$contact_tel2."' "
                 .", date_modi = now() "
-                ."Where cust_id = '".$cust_id."'";
+                ."Where hosp_id = '".$hosp_id."'";
     }
 }else if($_GET["flagPage"] === "supra"){
     $supra_id=$_GET["supra_id"];
@@ -136,6 +150,9 @@ if($_GET["flagPage"] === "company"){
     $paid=$_GET["paid"];
     $remark=$_GET["remark"];
     $flag_new=$_GET["flag_new"];
+    if(!is_numeric($paid)){
+        $paid="0";
+    }
     if(($_GET["flag_new"]==="-")|| ($_GET["flag_new"]==="new")){
 //        $sql = "Select count(1) as cnt From b_vendor ";
 //        if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
