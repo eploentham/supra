@@ -19,9 +19,9 @@ if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
 //if($result){
     while($row = mysqli_fetch_array($result)){
         $brName="<a href='#supraAdd.php?supraId=".$row["supra_id"]."'>".$row["pat_name"]." ".$row["pat_surname"]."</a>";
-        $trCust .= "<tr><td>".$row["supra_date"]."</td><td>".$brName."</td><td>".$row["hn"]."</td><td>".$row["branch_name"]
-            ."</td><td>".$row["hosp_name_t"]."</td><td>".$row["contact_name_hosp"]."</td><td>".$row["contact_tele_hosp"]
-            ."</td><td>".$row["contact_name_pat"]."</td><td>".$row["contact_tele_pat"]."</td></tr>";
+        $trCust .= "<tr><td>".$row["supra_doc"]."</td><td>".$row["supra_date"]."</td><td>".$brName."</td><td>".$row["hn"]."</td><td>".$row["branch_name"]
+            ."</td><td>".$row["hosp_name_t"]."</td><td>".$row["contact_name_hosp"]." ".$row["contact_tele_hosp"]."</td><td>".$row["contact_name_pat"]." ".$row["contact_tele_pat"]
+            ."</td><td>".$row["remark"]."</td><td>".$row["paid"]."</td><td>".$row["doctor_name"]."</td></tr>";
     }
 }else{
     echo mysqli_error($conn);
@@ -98,16 +98,30 @@ mysqli_close($conn);
                             <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
                                 <thead>
                                     <tr>
+                                        <th class="hasinput" style="width:17%">
+                                            <input type="text" class="form-control" placeholder="Filter Name" />
+                                        </th>
+                                        <th class="hasinput icon-addon">
+                                            <input id="dateselect_filter" type="text" placeholder="Filter Date" class="form-control datepicker" data-dateformat="yy/mm/dd">
+                                            <label for="dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="Filter Date"></label>
+                                        </th>
+                                        <th class="hasinput icon-addon">
+                                            <input id="dateselect_filter" type="text" placeholder="Filter Date" class="form-control datepicker" data-dateformat="yy/mm/dd">
+                                            <label for="dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="Filter Date"></label>
+                                        </th>
+                                    </tr>
+                                    <tr>
                                         <th data-hide="phone">Code</th>
                                         <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> วันที่</th>
                                         <th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ป่วย</th>
                                         <th>HN</th>
-                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> สาขา</th>
-                                        <th data-hide="phone,tablet">โรงพยาบาล</th>
+                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> โรงพยาบาลที่ส่งตัว</th>
+                                        <th data-hide="phone,tablet">โรงพยาบาลที่รับ (Supra)</th>
                                         <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ติดต่อ โรงพยาบาล</th>
-                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> เบอร์ผู้ติดต่อ โรงพยาบาล</th>
-                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ติดต่อ ผู้ป่วย</th>
-                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> เบอร์ผู้ติดต่อ ผู้ป่วย</th>
+                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ติดต่อ โรงพยาบาล (Supra)</th>
+                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> หมายเหตุ</th>
+                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ค่าใช้จ่าย</th>
+                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> แพทย์ผู้ส่งตัว</th>
                                     </tr>
                                 </thead>
                                 <tbody>

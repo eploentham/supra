@@ -69,6 +69,10 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         $supPaid = ($row["paid"]);
         $supHosp = ($row["hosp_id"]);
         $supBranch = ($row["branch_name"]);
+        $supContactNameHosp = $row["contact_name_hosp"];
+        $supContactTelHosp = $row["contact_tele_hosp"];
+        $supContactNamePat = $row["contact_name_pat"];
+        $supContactTelPat = $row["contact_tele_pat"];
     }
     //$aHosp = mysqli_fetch_array($rComp);
     
@@ -90,15 +94,15 @@ if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
 }else{
     echo mysqli_error($conn);
 }
-$sql="Select * From b_hospital Where active = '1' Order By hosp_name";
+$sql="Select * From b_hospital Where active = '1' Order By hosp_name_t";
 //$result = mysqli_query($conn,"Select * From f_company_type Where active = '1' Order By comp_type_code");
 if ($result=mysqli_query($conn,$sql)){
-    $oHosp = "<option value='0' selected='' disabled=''>เลือก สาขา</option>";
+    $oHosp = "<option value='0' selected='' disabled=''>เลือก โรงพยาบาล</option>";
     while($row = mysqli_fetch_array($result)){
-        if($branchId===$row["branch_id"]){
-            $oHosp .= '<option selected value='.$row["hosp_id"].'>'.$row["hosp_name"].'</option>';
+        if($hospId===$row["hosp_id"]){
+            $oHosp .= '<option selected value='.$row["hosp_id"].'>'.$row["hosp_name_t"].'</option>';
         }else{
-            $oHosp .= '<option value='.$row["hosp_id"].'>'.$row["hosp_name"].'</option>';
+            $oHosp .= '<option value='.$row["hosp_id"].'>'.$row["hosp_name_t"].'</option>';
         }
     }
 }
@@ -228,7 +232,7 @@ mysqli_close($conn);
                                             </select> <i></i> </label>
                                     </section>
                                     <section class="col col-6">
-                                        <label class="label">โรงพยาบาลที่รับ</label>
+                                        <label class="label">โรงพยาบาลที่รับ (Supra)</label>
                                         <label class="select">
                                             <select name="supHosp" id="supHosp">
                                                 <?php echo $oHosp;?>
@@ -248,6 +252,30 @@ mysqli_close($conn);
                                     </section>
                                 </div>
                                 <div class="row">
+                                    <section class="col col-6">
+                                        <label class="label">ชื่อผู้ติดต่อ (ผู้ป่วย)</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="supContactNameHosp" id="supContactNameHosp" value="<?php echo $supContactNameHosp;?>" placeholder="ชื่อผู้ติดต่อ (ผู้ป่วย)">
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="label">เบอร์ผู้ติดต่อ (ผู้ป่วย)</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="number" name="supContactTelHosp" id="supContactTelHosp" step=any value="<?php echo $supContactTelHosp;?>" placeholder="เบอร์ผู้ติดต่อ (ผู้ป่วย)">
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <label class="label">ชื่อผู้ติดต่อ (Supra)</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="supContactNamePat" id="supContactNamePat" value="<?php echo $supContactNamePat;?>" placeholder="แพทย์ผู้ส่งตัว">
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="label">เบอร์ผู้ติดต่อ (Supra)</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="number" name="supContactTelPat" id="supContactTelPat" step=any value="<?php echo $supContactTelPat;?>" placeholder="ค่ารักษาพยาบาล">
+                                    </section>
+                                </div>
+                                <div class="row">
                                     <section class="col col-8">
                                         <label class="label">หมายเหตุ</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
@@ -256,9 +284,21 @@ mysqli_close($conn);
                                 </div>
                             </fieldset>
                             <footer>
-                                <button type="button" id="btnSave" class="btn btn-primary">
-                                        บันทึกข้อมูล
-                                </button>
+                                <div class="row">
+                                    <section class="col col-3 ">
+                                        <button type="button" id="btnSave" class="btn btn-primary">
+                                                บันทึกข้อมูล
+                                        </button>
+                                    </section>
+                                    <section class="col col-3 ">
+                                        <ul class="demo-btns">
+                                            <li id="uiLoading">
+                                                <a href="javascript:void(0);" class="btn bg-color-blue txt-color-white"><i id="loading" class="fa fa-gear fa-2x fa-spin"></i></a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                                
                             </footer>
                         </form>
                     </div>
@@ -269,6 +309,7 @@ mysqli_close($conn);
 </section>
 <script type="text/javascript">
     pageSetUp();
+    $("#uiLoading").hide();
     // START AND FINISH DATE
     $('#supInputDate').datepicker({
         dateFormat : 'dd.mm.yy',
@@ -286,7 +327,9 @@ mysqli_close($conn);
     });
     $("#btnSave").click(saveSupra);
     function saveSupra(){
-        $.ajax({ 
+        $("#uiLoading").show();
+        $("#loading").addClass("fa-spin");
+        $.ajax({
             type: 'GET', url: 'saveData.php', contentType: "application/json", dataType: 'text', 
             data: { 'supra_id': $("#supId").val()
                 ,'supra_doc': $("#supraDoc").val()
@@ -295,7 +338,7 @@ mysqli_close($conn);
                 ,'hn': $("#supHN").val()
                 ,'pat_id': $("#supPatID").val()
                 ,'paid_type_name': $("#supPaidT").val()
-                ,'supra_type_id': $("#supSupT").val()
+                ,'supra_type_id': $("#supType").val()
                 ,'pat_name': $("#supPatName").val()
                 ,'pat_surname': $("#supPatSurname").val()
                 ,'branch_id': $("#supBranch").val()
@@ -303,10 +346,14 @@ mysqli_close($conn);
                 ,'doctor_name': $("#supDoctor").val()
                 ,'paid': $("#supPaid").val()
                 ,'remark': $("#remark").val()
+                ,'contact_name_hosp': $("#supContactNameHosp").val()
+                ,'contact_tel_hosp': $("#supContactTelHosp").val()
+                ,'contact_name_pat': $("#supContactNamePat").val()
+                ,'contact_tel_pat': $("#supContactTelPat").val()
                 ,'flag_new': $("#supFlagNew").val()
                 ,'flagPage': "supra" }, 
             success: function (data) {
-                alert('bbbbb'+data);
+                //alert('bbbbb'+data);
                 var json_obj = $.parseJSON(data);
                 for (var i in json_obj){
                     //alert("aaaa "+json_obj[i].success);
@@ -314,6 +361,8 @@ mysqli_close($conn);
                         title: 'Save Data',
                         content: 'บันทึกข้อมูลเรียบร้อย',
                     });
+                    $("#loading").removeClass("fa-spin");
+                    $("#uiLoading").hide();
                 }
 //                    alert('bbbbb '+json_obj.length);
 //                    alert('ccccc '+$("#cDistrict").val());

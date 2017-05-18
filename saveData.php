@@ -149,6 +149,10 @@ if($_GET["flagPage"] === "company"){
     $doctor_name=$_GET["doctor_name"];
     $paid=$_GET["paid"];
     $remark=$_GET["remark"];
+    $contact_name_hosp=$_GET["contact_name_hosp"];
+    $contact_tel_hosp=$_GET["contact_tel_hosp"];
+    $contact_name_pat=$_GET["contact_name_pat"];
+    $contact_tel_pat=$_GET["contact_tel_pat"];
     $flag_new=$_GET["flag_new"];
     if(!is_numeric($paid)){
         $paid="0";
@@ -171,12 +175,13 @@ if($_GET["flagPage"] === "company"){
 //    if(($_GET["vend_id"]==="-")|| ($_GET["vend_id"]==="")){
         $sql="Insert Into t_supra(supra_id, supra_doc, input_date, supra_date "
                 .", hn, pat_id, paid_type_name, supra_type_id "
-                .", pat_name, pat_surname, branch_id, hosp_id, "
-                ."doctor_name, paid, remark, active, date_create) "
+                .", pat_name, pat_surname, branch_id, hosp_id "
+                .", doctor_name, paid, remark, contact_name_hosp"
+                .", contact_tele_hosp,contact_name_pat,contact_tele_pat, active, date_create) "
                 ."Values(UUID(),'".$supra_doc."','".$input_date."','".$supra_date."','"
                 .$hn."','".$pat_id."','".$paid_type_name."','".$supra_type_id."','"
                 .$pat_name."','".$pat_surname."','".$branch_id."','".$hosp_id."','"
-                .$doctor_name."','".$paid."','".$remark."','1',now())";
+                .$doctor_name."','".$paid."','".$remark."','".$contact_name_hosp."','".$contact_tel_hosp."','".$contact_name_pat."','".$contact_tel_pat."','1',now())";
     }else{
         $sql="Update t_supra "
                 ."Set supra_doc = '".$supra_doc."' "
@@ -192,7 +197,11 @@ if($_GET["flagPage"] === "company"){
                 .", hosp_id = '".$hosp_id."' "
                 .", doctor_name = '".$doctor_name."' "
                 .", paid = ".$paid." "
-                .", remark = '".$$remark."' "                
+                .", remark = '".$remark."' "
+                .", contact_name_hosp = '".$contact_name_hosp."' "
+                .", contact_tele_hosp = '".$contact_tel_hosp."' "
+                .", contact_name_pat = '".$contact_name_pat."' "
+                .", contact_tele_pat = '".$contact_tel_pat."' "
                 .", date_modi = now() "
                 ."Where supra_id = '".$supra_id."'";
     }

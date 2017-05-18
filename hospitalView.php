@@ -14,7 +14,8 @@ $result = mysqli_query($conn,$sql);
 if($result){
     while($row = mysqli_fetch_array($result)){
         $brName="<a href='#hospitalAdd.php?hospId=".$row["hosp_id"]."'>".$row["hosp_name_t"]."</a>";
-        $trCust .= "<tr><td>".$row["hosp_code"]."</td><td>".$brName."</td><td>".$row["hosp_address_t"]."</td><td>".$row["tele"]."</td><td></td></tr>";
+        $trCust .= "<tr><td>".$row["hosp_code"]."</td><td>".$brName."</td><td>".$row["hosp_address_t"]."</td><td>"
+                .$row["tele"]."</td><td>".$row["email"]."</td><td>".$row["tax_id"]."</td><td>".$row["contact_name1"]." ".$row["contact_tel1"]."</td><td></td></tr>";
     }
 }
 $result->free();

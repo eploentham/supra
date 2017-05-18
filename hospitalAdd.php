@@ -15,6 +15,8 @@ if(isset($_GET["hospId"])){
 }
 $hoProvName1="";
 $hoAmpName1="";
+$hoDisName1="";
+$hoEmail="";
 $oProv1 = $oProv;
 $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 mysqli_set_charset($conn, "UTF8");
@@ -34,6 +36,7 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
     $hoNameT = ($aHosp["hosp_name_t"]);
     $hoAddress = ($aHosp["hosp_address_t"]);
     $hoTele = ($aHosp["tele"]);
+    $hoEmail = $aHosp["email"];
     $hoZipcode = ($aHosp["zipcode"]);
     $hoProvId = ($aHosp["prov_id"]);
     $hoProvName = ($aHosp["prov_name"]);
@@ -49,15 +52,22 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
     if(isset($hoProvId)){
         $cnt=1;
         $bb = strval($aHosp["prov_id"]);
-        $aa = '<option selected value='.$bb;
+        $aa = '<option selected value='.$bb.">".$hoProvName."</option>";
         $oProv1 = str_replace("selected=''", "", $oProv1);
-        $oProv1 = str_replace('<option value='.$bb, $aa, $oProv1,$cnt);
+        $oProv1 = str_replace('<option value='.$bb.">".$hoProvName."</option>", $aa, $oProv1,$cnt);
+        
     }
     if(isset($hoAmpName)){
-        $hoAmpName1 = "<option value='0' disabled=''>เลือกจังหวัด</option>";
-        $hoAmpName1 .= "<option selected='true' value='".$hoProvId."'>".$hoProvName."</option>";
+        $hoAmpName1 = "<option value='0' disabled=''>เลือกอำเภอ</option>";
+        $hoAmpName1 .= "<option selected='true' value='".$hoAmphurId."'>".$hoAmpName."</option>";
     }else{
         $hoAmpName1 = $oProv;
+    }
+    if(isset($hoDisName)){
+        $hoDisName1 = "<option value='0' disabled=''>เลือกตำบล</option>";
+        $hoDisName1 .= "<option selected='true' value='".$hoDistrictId."'>".$hoDisName."</option>";
+    }else{
+        $hoDisName1 = $oProv;
     }
 }else{
     echo mysqli_error($conn);
@@ -151,7 +161,7 @@ mysqli_close($conn);
                                     <section class="col col-4">
                                         <label class="label">code</label>
                                         <label class="input"> <i class="icon-append fa fa-lock"></i>
-                                            <input type="text" name="hoCode" id="hoCode" placeholder="รหัส1" value="<?php echo $oProv1;?>">
+                                            <input type="text" name="hoCode" id="hoCode" placeholder="รหัส1" value="<?php echo $hoCode;?>">
                                             <b class="tooltip tooltip-bottom-right">Don't forget your password</b> </label>
                                     </section>
                                     <section class="col col-8">
@@ -159,7 +169,6 @@ mysqli_close($conn);
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="hoNameT" id="hoNameT" value="<?php echo $hoNameT;?>" placeholder="ชื่อโรงพยาบาล">
                                             <input type="hidden" name="hoId" id="hoId" value="<?php echo $hoId;?>">
-                                            <input type="hidden" name="hoCode" id="hoCode" value="<?php echo $hoCode;?>">
                                             <b class="tooltip tooltip-bottom-right">Needed to enter the website</b> </label>
                                     </section>
                                 </div>
@@ -176,14 +185,14 @@ mysqli_close($conn);
                                         <label class="label">ตำบล</label>
                                         <label class="select">
                                             <select name="hoDistrict" id="hoDistrict">
-                                                <?php echo $oComp;?>
+                                                <?php echo $hoDisName1;?>
                                             </select> <i></i> </label>
                                     </section>
                                     <section class="col col-6">
                                         <label class="label">อำเภอ</label>
                                         <label class="select">
                                             <select name="hoAmphur" id="hoAmphur">
-                                                <?php echo $oComp;?>
+                                                <?php echo $hoAmpName1;?>
                                             </select> <i></i> </label>
                                     </section>
                                 </div>
@@ -252,9 +261,21 @@ mysqli_close($conn);
                             </fieldset>
                             
                             <footer>
-                                <button type="button" id="btnSave" class="btn btn-primary">
-                                        บันทึกข้อมูล
-                                </button>
+                                <div class="row">
+                                    <section class="col col-3 ">
+                                        <button type="button" id="btnSave" class="btn btn-primary">
+                                            บันทึกข้อมูล
+                                        </button>
+                                    </section>
+                                    <section class="col col-3 ">
+                                        <ul class="demo-btns">
+                                            <li id="uiLoading">
+                                                <a href="javascript:void(0);" class="btn bg-color-blue txt-color-white"><i id="loading" class="fa fa-gear fa-2x fa-spin"></i></a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                                
                             </footer>
                         </form>
 
@@ -412,6 +433,7 @@ mysqli_close($conn);
 	// Load form valisation dependency 
 	loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
         $("#hospAlert").hide();
+        $("#uiLoading").hide();
         $("#hoProv").change(getAmphur);
         $("#hoAmphur").change(getDistrict);
         $("#hoDistrict").change(getZipcode);
@@ -483,11 +505,15 @@ mysqli_close($conn);
             });
         }
         function saveHospital(){
-            //alert('aaaaa');
+//            alert('aaaaa');
+            $("#uiLoading").show();
+            $("#loading").addClass("fa-spin");
+            $("#btnSave").prop("disabled", true);
             $.ajax({ 
                 type: 'GET', url: 'saveData.php', contentType: "application/json", dataType: 'text', 
                 data: { 'hosp_id': $("#hoId").val()
                     ,'hosp_code': $("#hoCode").val()
+//                    ,'hosp_code': "aaa"
                     ,'hosp_name_t': $("#hoNameT").val()
                     ,'hosp_address_t': $("#hoAddress").val()
                     ,'tele': $("#hoTele").val()
@@ -503,7 +529,7 @@ mysqli_close($conn);
                     ,'contact_tel2': $("#hoContactTel2").val()
                     ,'flagPage': "hospital" }, 
                 success: function (data) {
-                    //alert('bbbbb'+data);
+//                    alert('bbbbb'+data);
                     var json_obj = $.parseJSON(data);
                     for (var i in json_obj){
                         //alert("aaaa "+json_obj[i].success);
@@ -511,6 +537,8 @@ mysqli_close($conn);
                             title: 'Save Data',
                             content: 'บันทึกข้อมูลเรียบร้อย',
                         });
+                        $("#loading").removeClass("fa-spin");
+                        $("#uiLoading").hide();
                     }
 //                    alert('bbbbb '+json_obj.length);
 //                    alert('ccccc '+$("#cDistrict").val());
