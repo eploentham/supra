@@ -136,8 +136,11 @@ if($_GET["flagPage"] === "company"){
 }else if($_GET["flagPage"] === "supra"){
     $supra_id=$_GET["supra_id"];
     $supra_doc=$_GET["supra_doc"];
-    $input_date=$_GET["input_date"];
-    $supra_date=$_GET["supra_date"];
+//    $input_date=$_GET["input_date"];
+//    $supra_date=$_GET["supra_date"];
+    $input_date=substr($_GET["input_date"],strlen($_GET["input_date"])-4)."-".substr($_GET["input_date"],3,2)."-".substr($_GET["input_date"],0,2);
+    $supra_date=substr($_GET["supra_date"],strlen($_GET["supra_date"])-4)."-".substr($_GET["supra_date"],3,2)."-".substr($_GET["supra_date"],0,2);
+    
     $hn=$_GET["hn"];
     $pat_id=$_GET["pat_id"];
     $paid_type_name=$_GET["paid_type_name"];

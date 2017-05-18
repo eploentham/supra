@@ -3,7 +3,7 @@
 session_start();
 if (!isset($_SESSION['bn_user_staff_name'])) {
     //header("location: #login.php");
-    $_SESSION['bn_page'] ="customerView.php";
+    $_SESSION['bn_page'] ="supraView.php";
     echo "<script>window.location.assign('#login.php');</script>";
 }
 $trCust="";
