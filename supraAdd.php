@@ -29,6 +29,10 @@ $supId="";
 $supBranch="";
 $supFlagNew="";
 $branchId="";
+$supContactNameHosp="";
+$supContactTelHosp="";
+$supContactNamePat="";
+$supContactTelPat="";
 if(isset($_GET["supraId"])){
     $supId = $_GET["supraId"];
     $supFlagNew = "old";
@@ -244,8 +248,9 @@ mysqli_close($conn);
                                 <div class="row">
                                     <section class="col col-6">
                                         <label class="label">แพทย์ผู้ส่งตัว</label>
-                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                        <label class="input"> 
                                             <input type="text" name="supDoctor" id="supDoctor" value="<?php echo $supDoctor;?>" placeholder="แพทย์ผู้ส่งตัว">
+                                            <div id="log" class="font-xs margin-top-10 text-danger"></div>
                                     </section>
                                     <section class="col col-4">
                                         <label class="label">ค่ารักษาพยาบาล</label>
@@ -255,24 +260,24 @@ mysqli_close($conn);
                                 </div>
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label">ชื่อผู้ติดต่อ (ผู้ป่วย)</label>
+                                        <label class="label">ชื่อผู้ติดต่อ (Supra)</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="supContactNameHosp" id="supContactNameHosp" value="<?php echo $supContactNameHosp;?>" placeholder="ชื่อผู้ติดต่อ (ผู้ป่วย)">
                                     </section>
                                     <section class="col col-4">
-                                        <label class="label">เบอร์ผู้ติดต่อ (ผู้ป่วย)</label>
+                                        <label class="label">เบอร์ผู้ติดต่อ (Supra)</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="number" name="supContactTelHosp" id="supContactTelHosp" step=any value="<?php echo $supContactTelHosp;?>" placeholder="เบอร์ผู้ติดต่อ (ผู้ป่วย)">
                                     </section>
                                 </div>
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label">ชื่อผู้ติดต่อ (Supra)</label>
+                                        <label class="label">ชื่อผู้ติดต่อ (ผู้ป่วย)</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="supContactNamePat" id="supContactNamePat" value="<?php echo $supContactNamePat;?>" placeholder="แพทย์ผู้ส่งตัว">
                                     </section>
                                     <section class="col col-4">
-                                        <label class="label">เบอร์ผู้ติดต่อ (Supra)</label>
+                                        <label class="label">เบอร์ผู้ติดต่อ (ผู้ป่วย)</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="number" name="supContactTelPat" id="supContactTelPat" step=any value="<?php echo $supContactTelPat;?>" placeholder="ค่ารักษาพยาบาล">
                                     </section>
@@ -310,25 +315,72 @@ mysqli_close($conn);
     </div>
 </section>
 <script type="text/javascript">
-    pageSetUp();
-    $("#uiLoading").hide();
-    // START AND FINISH DATE
-    $('#supInputDate').datepicker({
-        dateFormat : 'dd.mm.yy',
-        prevText : '<i class="fa fa-chevron-left"></i>',
-        nextText : '<i class="fa fa-chevron-right"></i>',
-        onSelect : function(selectedDate) {
-                $('#supInputDate').datepicker('option', 'minDate', selectedDate);
-        }
+    $(document).ready(function() {
+        pageSetUp();
+        $("#uiLoading").hide();
+        // START AND FINISH DATE
+        $('#supInputDate').datepicker({
+            dateFormat : 'dd.mm.yy',
+            prevText : '<i class="fa fa-chevron-left"></i>',
+            nextText : '<i class="fa fa-chevron-right"></i>',
+            onSelect : function(selectedDate) {
+                    $('#supInputDate').datepicker('option', 'minDate', selectedDate);
+            }
+        });
+        loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
+
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: '-3d'
+        });
+        $("#btnSave").click(saveSupra);
+        $("#supDoctor").autocomplete({
+            source : function(request, response) {
+                //alert("bbbb");
+                $.ajax({
+                    type: 'GET',  url : "getAmphur.php", contentType: "application/json", dataType : "json",
+                    data : {
+                        featureClass : "P",
+                        style : "full",
+                        maxRows : 12,
+                        flagPage: "searchDoctor",
+                        name_startsWith : request.term
+                    },
+                    success : function(data) {
+                       //alert("aaaa"+data);
+                       //var json_obj = $.parseJSON(data);
+                       //alert("aaaa"+json_obj);
+                        response($.map(data, function(item) {
+                            return {
+                                    label : item.name ,value : item.name
+                            }
+                        }));
+                    }
+                });
+            },
+            minLength : 2,
+            select : function(event, ui) {
+                    log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+            }
+        });
     });
-    loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
     
-    $('.datepicker').datepicker({
-        format: 'dd/mm/yyyy',
-        startDate: '-3d'
-    });
-    $("#btnSave").click(saveSupra);
+    
     function saveSupra(){
+        if($("#supInputDate").val()==""){
+            $.alert({
+                title: 'Validate Data',
+                content: 'วันที่ป้อน ไม่มีค่า',
+            });
+            return;
+        }
+        if($("#supSupraDate").val()==""){
+            $.alert({
+                title: 'Validate Data',
+                content: 'วันที่สงตัว ไม่มีค่า',
+            });
+            return;
+        }
         $("#uiLoading").show();
         $("#loading").addClass("fa-spin");
         $.ajax({
@@ -372,4 +424,5 @@ mysqli_close($conn);
             }
         });
     }
+    
 </script>

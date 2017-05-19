@@ -90,14 +90,14 @@ if($_GET['flagPage']=="amphur"){
         }
         $result->free();
     }
-}else if($_GET['flagPage']=="goSearch"){
-    $sql="Select go.goods_name, go.goods_id, go.price, go.cost, IFNULL(go.holes,'') as holes, ifnull(go.side,'') as side, ifnull(go.dia_meter,'') as dia_meter, ifnull(go.length,'') as length, go.unit_id, go.goods_type_id, got.goods_type_name "
-        ."From b_goods go Left Join b_goods_type got on go.goods_type_id = got.goods_type_id "
-        ."Where goods_code = '".$_GET['goods_code']."' ";
+}else if($_GET['flagPage']=="searchDoctor"){
+    $sql="Select * From provinces ";
     if ($result=mysqli_query($conn,$sql)){
+        $ok="";
+        $err="";
         if(!$result){
             $ok="0";
-            $err= mysqli_error();
+            $err= mysql_error();
             $tmp = array();
             $tmp["error"] = $err;
             $tmp["sql"] = $sql;
@@ -105,25 +105,14 @@ if($_GET['flagPage']=="amphur"){
         }else{
             $ok="1";
             $tmp = array();
-            $tmp["sql"] = $sql;
-            array_push($resultArray,$tmp);
-            while($row = mysqli_fetch_array($result)){
-                $tmp["goods_name"] = $row["goods_name"];
-                $tmp["goods_id"] = $row["goods_id"];
-                $tmp["price"] = $row["price"];
-                $tmp["cost"] = $row["cost"];
-                $tmp["goods_type_name"] = $row["goods_type_name"];
-                $tmp["holes"] = $row["holes"];
-                $tmp["side"] = $row["side"];
-                $tmp["dia_meter"] = $row["dia_meter"];
-                $tmp["length"] = $row["length"];
-                $tmp["unit_id"] = $row["unit_id"];
-                $tmp["goods_type_id"] = $row["goods_type_id"];
-                if($row["goods_type_id"]="05233f7d-225b-11e7-b800-1c1b0d8ca1a0"){
-                    $tmp["goods_name1"] = $row["goods_name"]." Holes [".$row["holes"]."], Side [".$row["side"]."]";
-                }else{
-                    $tmp["goods_name1"] = $row["goods_name"]." Dia meter ".$row["dia_meter"]."], Length [".$row["length"]."]";
-                }
+            //$tmp["sql"] = $sql;
+            //array_push($resultArray,$tmp);
+            while($row = mysqli_fetch_array($result)){        
+                //$tmp["label"] = $row["prov_id"];
+                //$tmp["value"] = $row["prov_name"];
+                $tmp["name"] = $row["name"];
+//                $tmp["adminName1"] = $row["adminName1"];
+//                $tmp["countryName"] = $row["countryName"];
                 array_push($resultArray,$tmp);
             }
         }
