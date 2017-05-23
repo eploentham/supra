@@ -33,6 +33,8 @@ $supContactNameHosp="";
 $supContactTelHosp="";
 $supContactNamePat="";
 $supContactTelPat="";
+$supPatSex="";
+$supPatStaff="";
 if(isset($_GET["supraId"])){
     $supId = $_GET["supraId"];
     $supFlagNew = "old";
@@ -79,6 +81,8 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         $supContactTelHosp = $row["contact_tele_hosp"];
         $supContactNamePat = $row["contact_name_pat"];
         $supContactTelPat = $row["contact_tele_pat"];
+        $supPatSex = $row["pat_sex"];
+        $supPatStaff = $row["pat_staff"];
     }
     //$aHosp = mysqli_fetch_array($rComp);
     
@@ -218,31 +222,41 @@ mysqli_close($conn);
                                     </section>
                                 </div>
                                 <div class="row">
-                                    <section class="col col-6">
+                                    <section class="col col-5">
                                         <label class="label">ชื่อผู้ป่วย</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="supPatName" id="supPatName" value="<?php echo $supPatName;?>" placeholder="ชื่อผู้ป่วย">
                                     </section>
-                                    <section class="col col-6">
+                                    <section class="col col-5">
                                         <label class="label">นามสกุล</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="supPatSurname" id="supPatSurname" value="<?php echo $supPatSurname;?>" placeholder="นามสกุล">
                                     </section>
+
+                                    <section class="col col-2">
+                                        <label class="label">&nbsp;</label>
+                                        <label class="toggle state-error"><input type="checkbox" name="supSex" checked="true" id="supSex"><i data-swchon-text=" ชาย" data-swchoff-text=" หญิง"></i>เพศ</label>
+                                    </section>
                                 </div>
                                 <div class="row">
-                                    <section class="col col-6">
+                                    <section class="col col-5">
                                         <label class="label">โรงพยาบาลที่ส่งตัว</label>
                                         <label class="select">
                                             <select name="supBranch" id="supBranch">
                                                 <?php echo $oBranch;?>
                                             </select> <i></i> </label>
                                     </section>
-                                    <section class="col col-6">
+                                    <section class="col col-5">
                                         <label class="label">โรงพยาบาลที่รับ (Supra)</label>
                                         <label class="select">
                                             <select name="supHosp" id="supHosp">
                                                 <?php echo $oHosp;?>
                                             </select> <i></i> </label>
+                                    </section>
+                                    <section class="col col-2">
+                                        <label class="label">อายุ</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="number" name="patAge" id="patAge" step="any" value="<?php echo $patAge;?>" placeholder="อายุ">
                                     </section>
                                 </div>
                                 <div class="row">
@@ -252,10 +266,14 @@ mysqli_close($conn);
                                             <input type="text" name="supDoctor" id="supDoctor" value="<?php echo $supDoctor;?>" placeholder="แพทย์ผู้ส่งตัว">
                                             <div id="log" class="font-xs margin-top-10 text-danger"></div>
                                     </section>
-                                    <section class="col col-4">
+                                    <section class="col col-3">
                                         <label class="label">ค่ารักษาพยาบาล</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="number" name="supPaid" id="supPaid" step=any value="<?php echo $supPaid;?>" placeholder="ค่ารักษาพยาบาล">
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="label">&nbsp;</label>
+                                        <label class="toggle state-error"><input type="checkbox" name="chkStatusCar" checked="true" id="chkStatusCar"><i data-swchon-text=" ผู้ส่ง" data-swchoff-text=" ผู้รับ"></i>รถรับส่ง</label>
                                     </section>
                                 </div>
                                 <div class="row">
@@ -267,7 +285,7 @@ mysqli_close($conn);
                                     <section class="col col-4">
                                         <label class="label">เบอร์ผู้ติดต่อ (Supra)</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="number" name="supContactTelHosp" id="supContactTelHosp" step=any value="<?php echo $supContactTelHosp;?>" placeholder="เบอร์ผู้ติดต่อ (ผู้ป่วย)">
+                                            <input type="number" name="supContactTelHosp" id="supContactTelHosp" step="any" value="<?php echo $supContactTelHosp;?>" placeholder="เบอร์ผู้ติดต่อ (ผู้ป่วย)">
                                     </section>
                                 </div>
                                 <div class="row">
@@ -278,6 +296,28 @@ mysqli_close($conn);
                                     </section>
                                     <section class="col col-4">
                                         <label class="label">เบอร์ผู้ติดต่อ (ผู้ป่วย)</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="number" name="supContactTelPat" id="supContactTelPat" step=any" value="<?php echo $supContactTelPat;?>" placeholder="ค่ารักษาพยาบาล">
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-5">
+                                        <label class="label">เจ้าหน้าที่ผู้รับผิดชอบ</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="supPatStaff" id="supPatStaff" value="<?php echo $supPatStaff;?>" placeholder="เจ้าหน้าที่ผู้รับผิดชอบ">
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="label">เหตุผลการส่งตัว</label>
+                                        <label class="select"><select name="supReason" id="supReason">
+                                            <option>การวินิจฉัย</option>
+                                            <option>รักษาจยเสร็จ</option>
+                                            <option>ขอทราบผล</option>
+                                            <option>รักษาเบื้องต้น</option>
+                                            <option>อื่นๆ</option>
+                                            </select> <i></i> </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="label">&nbsp;</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="number" name="supContactTelPat" id="supContactTelPat" step=any value="<?php echo $supContactTelPat;?>" placeholder="ค่ารักษาพยาบาล">
                                     </section>
