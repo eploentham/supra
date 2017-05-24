@@ -35,6 +35,9 @@ $supContactNamePat="";
 $supContactTelPat="";
 $supPatSex="";
 $supPatStaff="";
+$supPatSex1="";
+$statusCar="";
+$statusCar1="";
 if(isset($_GET["supraId"])){
     $supId = $_GET["supraId"];
     $supFlagNew = "old";
@@ -83,6 +86,17 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         $supContactTelPat = $row["contact_tele_pat"];
         $supPatSex = $row["pat_sex"];
         $supPatStaff = $row["pat_staff"];
+        $statusCar = $row["status_car"];
+        if($supPatSex=="M"){
+            $supPatSex1="checked='true'";
+        }else{
+            $supPatSex1="checked='false'";
+        }
+        if($statusCar=="1"){
+            $statusCar1="checked='true'";
+        }else{
+            $statusCar1="checked='false'";
+        }
     }
     //$aHosp = mysqli_fetch_array($rComp);
     
@@ -235,7 +249,7 @@ mysqli_close($conn);
 
                                     <section class="col col-2">
                                         <label class="label">&nbsp;</label>
-                                        <label class="toggle state-error"><input type="checkbox" name="supSex" checked="true" id="supSex"><i data-swchon-text=" ชาย" data-swchoff-text=" หญิง"></i>เพศ</label>
+                                        <label class="toggle state-error"><input type="checkbox" name="supPatSex" id="supPatSex" <?php echo $supPatSex1;?>><i data-swchon-text=" ชาย" data-swchoff-text=" หญิง"></i>เพศ</label>
                                     </section>
                                 </div>
                                 <div class="row">
@@ -273,7 +287,7 @@ mysqli_close($conn);
                                     </section>
                                     <section class="col col-3">
                                         <label class="label">&nbsp;</label>
-                                        <label class="toggle state-error"><input type="checkbox" name="chkStatusCar" checked="true" id="chkStatusCar"><i data-swchon-text=" ผู้ส่ง" data-swchoff-text=" ผู้รับ"></i>รถรับส่ง</label>
+                                        <label class="toggle state-error"><input type="checkbox" name="chkStatusCar" id="chkStatusCar" <?php echo $statusCar1;?> ><i data-swchon-text=" ผู้ส่ง" data-swchoff-text=" ผู้รับ"></i>รถรับส่ง</label>
                                     </section>
                                 </div>
                                 <div class="row">
@@ -297,7 +311,7 @@ mysqli_close($conn);
                                     <section class="col col-4">
                                         <label class="label">เบอร์ผู้ติดต่อ (ผู้ป่วย)</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="number" name="supContactTelPat" id="supContactTelPat" step=any" value="<?php echo $supContactTelPat;?>" placeholder="ค่ารักษาพยาบาล">
+                                            <input type="number" name="supContactTelPat" id="supContactTelPat" step="any" value="<?php echo $supContactTelPat;?>" placeholder="ค่ารักษาพยาบาล">
                                     </section>
                                 </div>
                                 <div class="row">
@@ -309,11 +323,11 @@ mysqli_close($conn);
                                     <section class="col col-3">
                                         <label class="label">เหตุผลการส่งตัว</label>
                                         <label class="select"><select name="supReason" id="supReason">
-                                            <option>การวินิจฉัย</option>
-                                            <option>รักษาจยเสร็จ</option>
-                                            <option>ขอทราบผล</option>
-                                            <option>รักษาเบื้องต้น</option>
-                                            <option>อื่นๆ</option>
+                                                <option value="1">การวินิจฉัย</option>
+                                                <option value="2">รักษาจนเสร็จ</option>
+                                                <option value="3">ขอทราบผล</option>
+                                                <option value="4">รักษาเบื้องต้น</option>
+                                                <option value="5">อื่นๆ</option>
                                             </select> <i></i> </label>
                                     </section>
                                     <section class="col col-4">
@@ -358,6 +372,7 @@ mysqli_close($conn);
     $(document).ready(function() {
         pageSetUp();
         $("#uiLoading").hide();
+        $("#supAlert").hide();
         // START AND FINISH DATE
         $('#supInputDate').datepicker({
             dateFormat : 'dd.mm.yy',
@@ -412,6 +427,9 @@ mysqli_close($conn);
                 title: 'Validate Data',
                 content: 'วันที่ป้อน ไม่มีค่า',
             });
+            $("#supAlert").show();
+            $("#supVali").empty();
+            $("#supVali").append("วันที่ป้อน ไม่มีค่า");
             return;
         }
         if($("#supSupraDate").val()==""){
@@ -419,7 +437,22 @@ mysqli_close($conn);
                 title: 'Validate Data',
                 content: 'วันที่สงตัว ไม่มีค่า',
             });
+            $("#supAlert").show();
+            $("#supVali").empty();
+            $("#supVali").append("วันที่สงตัว ไม่มีค่า");
             return;
+        }
+        var suppatSex = "", statusCar="";
+        
+        if($("#supPatSex").is(':checked')){
+            suppatSex = "M";
+        }else{
+            suppatSex = "F";
+        }
+        if($("#chkStatusCar").is(':checked')){
+            statusCar = "1";
+        }else{
+            statusCar = "0";
         }
         $("#uiLoading").show();
         $("#loading").addClass("fa-spin");
@@ -444,10 +477,15 @@ mysqli_close($conn);
                 ,'contact_tel_hosp': $("#supContactTelHosp").val()
                 ,'contact_name_pat': $("#supContactNamePat").val()
                 ,'contact_tel_pat': $("#supContactTelPat").val()
+                ,'pat_sex': suppatSex
+                ,'status_car': statusCar
+                ,'pat_age': $("#patAge").val()
+                ,'reason': $("#supReason").val()
+                ,'pat_staff': $("#supPatStaff").val()
                 ,'flag_new': $("#supFlagNew").val()
                 ,'flagPage': "supra" }, 
             success: function (data) {
-                //alert('bbbbb'+data);
+                alert('bbbbb'+data);
                 var json_obj = $.parseJSON(data);
                 for (var i in json_obj){
                     //alert("aaaa "+json_obj[i].success);
@@ -457,6 +495,8 @@ mysqli_close($conn);
                     });
                     $("#loading").removeClass("fa-spin");
                     $("#uiLoading").hide();
+                    $("#supVali").empty();
+                    $("#supVali").append("บันทึกข้อมูลเรียบร้อย");
                 }
 //                    alert('bbbbb '+json_obj.length);
 //                    alert('ccccc '+$("#cDistrict").val());

@@ -7,6 +7,7 @@ if (!isset($_SESSION['bn_user_staff_name'])) {
     echo "<script>window.location.assign('#login.php');</script>";
 }
 $trCust="";
+$supraDate="";
 $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 mysqli_set_charset($conn, "UTF8");
 $sql="Select sup.*, br.branch_name, ho.hosp_name_t "
@@ -18,7 +19,10 @@ $sql="Select sup.*, br.branch_name, ho.hosp_name_t "
 if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
 //if($result){
     while($row = mysqli_fetch_array($result)){
+        $supraDate = ($row["supra_date"]);
+        $supraDate = substr($supraDate,strlen($supraDate)-2)."-".substr($supraDate,5,2)."-".substr($supraDate,0,4);
         $brName="<a href='#supraAdd.php?supraId=".$row["supra_id"]."'>".$row["pat_name"]." ".$row["pat_surname"]."</a>";
+        
         $trCust .= "<tr><td>".$row["supra_doc"]."</td><td>".$row["supra_date"]."</td><td>".$brName."</td><td>".$row["hn"]."</td><td>".$row["branch_name"]
             ."</td><td>".$row["hosp_name_t"]."</td><td>".$row["contact_name_hosp"]." ".$row["contact_tele_hosp"]."</td><td>".$row["contact_name_pat"]." ".$row["contact_tele_pat"]
             ."</td><td>".$row["remark"]."</td><td>".$row["paid"]."</td><td>".$row["doctor_name"]."</td></tr>";

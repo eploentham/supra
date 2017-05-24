@@ -156,6 +156,11 @@ if($_GET["flagPage"] === "company"){
     $contact_tel_hosp=$_GET["contact_tel_hosp"];
     $contact_name_pat=$_GET["contact_name_pat"];
     $contact_tel_pat=$_GET["contact_tel_pat"];
+    $status_car=$_GET["status_car"];
+    $pat_sex=$_GET["pat_sex"];
+    $pat_age=$_GET["pat_age"];
+    $reason=$_GET["reason"];
+    $pat_staff=$_GET["pat_staff"];
     $flag_new=$_GET["flag_new"];
     if(!is_numeric($paid)){
         $paid="0";
@@ -180,11 +185,14 @@ if($_GET["flagPage"] === "company"){
                 .", hn, pat_id, paid_type_name, supra_type_id "
                 .", pat_name, pat_surname, branch_id, hosp_id "
                 .", doctor_name, paid, remark, contact_name_hosp"
-                .", contact_tele_hosp,contact_name_pat,contact_tele_pat, active, date_create) "
+                .", contact_tele_hosp,contact_name_pat,contact_tele_pat, status_car"
+                .", pat_sex, pat_age, reason, pat_staff, active, date_create) "
                 ."Values(UUID(),'".$supra_doc."','".$input_date."','".$supra_date."','"
                 .$hn."','".$pat_id."','".$paid_type_name."','".$supra_type_id."','"
                 .$pat_name."','".$pat_surname."','".$branch_id."','".$hosp_id."','"
-                .$doctor_name."','".$paid."','".$remark."','".$contact_name_hosp."','".$contact_tel_hosp."','".$contact_name_pat."','".$contact_tel_pat."','1',now())";
+                .$doctor_name."','".$paid."','".$remark."','".$contact_name_hosp."','"
+                .$contact_tel_hosp."','".$contact_name_pat."','".$contact_tel_pat."','".$status_car."','"
+                .$pat_sex."','".$pat_age."','".$reason."','".$pat_staff."','1',now())";
     }else{
         $sql="Update t_supra "
                 ."Set supra_doc = '".$supra_doc."' "
@@ -205,6 +213,11 @@ if($_GET["flagPage"] === "company"){
                 .", contact_tele_hosp = '".$contact_tel_hosp."' "
                 .", contact_name_pat = '".$contact_name_pat."' "
                 .", contact_tele_pat = '".$contact_tel_pat."' "
+                .", status_car = '".$status_car."' "
+                .", pat_sex = '".$pat_sex."' "
+                .", pat_age = '".$pat_age."' "
+                .", reason = '".$reason."' "
+                .", pat_staff = '".$pat_staff."' "
                 .", date_modi = now() "
                 ."Where supra_id = '".$supra_id."'";
     }
