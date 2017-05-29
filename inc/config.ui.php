@@ -603,7 +603,7 @@ $page_nav = array(
         "icon" => "fa-home",
         "sub" => array(
             "recStock" => array(
-                "title" => "ป้อนข้อมูล Supra",
+                "title" => "ป้อนข้อมูล ใบส่งตัวผู้ป่วย",
                 "url" => "supraView.php"
             )
         )

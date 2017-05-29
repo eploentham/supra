@@ -102,19 +102,6 @@ mysqli_close($conn);
                             <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
                                 <thead>
                                     <tr>
-                                        <th class="hasinput" style="width:17%">
-                                            <input type="text" class="form-control" placeholder="Filter Name" />
-                                        </th>
-                                        <th class="hasinput icon-addon">
-                                            <input id="dateselect_filter" type="text" placeholder="Filter Date" class="form-control datepicker" data-dateformat="yy/mm/dd">
-                                            <label for="dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="Filter Date"></label>
-                                        </th>
-                                        <th class="hasinput icon-addon">
-                                            <input id="dateselect_filter" type="text" placeholder="Filter Date" class="form-control datepicker" data-dateformat="yy/mm/dd">
-                                            <label for="dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="Filter Date"></label>
-                                        </th>
-                                    </tr>
-                                    <tr>
                                         <th data-hide="phone">Code</th>
                                         <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> วันที่</th>
                                         <th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ป่วย</th>

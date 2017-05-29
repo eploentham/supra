@@ -177,7 +177,7 @@ mysqli_close($conn);
             <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false">
                 <header>
                     <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-                    <h2>รายละเอียด Supra </h2>	
+                    <h2>รายละเอียด ใบส่งตัวผู้ป่วย </h2>	
                 </header>
                 <div>
                     <div class="widget-body no-padding">
@@ -196,7 +196,6 @@ mysqli_close($conn);
                                         <label class="label">วันที่ป้อน</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="supInputDate" id="supInputDate" value="<?php echo $supInputDate;?>" placeholder="วันที่ป้อน" class="datepicker" data-date-format="dd/mm/yyyy">
-                                            
                                     </section>
                                     <section class="col col-4">
                                         <label class="label">วันที่สงตัว</label>
@@ -228,7 +227,7 @@ mysqli_close($conn);
                                     <section class="col col-3">
                                         <label class="label">ประเภท</label>
                                         <label class="select">
-                                            <select name="supSupT" id="supType">
+                                            <select name="supType" id="supType">
                                                 <option value="0" disabled="disabled">เลือกประเภท ส่งตัว</option>
                                                 <option value="ส่งตัว">ส่งตัว</option>
                                                 <option value="Follow up">Follow up</option>
@@ -294,12 +293,12 @@ mysqli_close($conn);
                                     <section class="col col-6">
                                         <label class="label">ชื่อผู้ติดต่อ (Supra)</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="text" name="supContactNameHosp" id="supContactNameHosp" value="<?php echo $supContactNameHosp;?>" placeholder="ชื่อผู้ติดต่อ (ผู้ป่วย)">
+                                            <input type="text" name="supContactNameHosp" id="supContactNameHosp" value="<?php echo $supContactNameHosp;?>" placeholder="ชื่อผู้ติดต่อ (Supra)">
                                     </section>
                                     <section class="col col-4">
                                         <label class="label">เบอร์ผู้ติดต่อ (Supra)</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="number" name="supContactTelHosp" id="supContactTelHosp" step="any" value="<?php echo $supContactTelHosp;?>" placeholder="เบอร์ผู้ติดต่อ (ผู้ป่วย)">
+                                            <input type="number" name="supContactTelHosp" id="supContactTelHosp"  value="<?php echo $supContactTelHosp;?>" placeholder="เบอร์ผู้ติดต่อ (Supra)">
                                     </section>
                                 </div>
                                 <div class="row">
@@ -311,7 +310,7 @@ mysqli_close($conn);
                                     <section class="col col-4">
                                         <label class="label">เบอร์ผู้ติดต่อ (ผู้ป่วย)</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="number" name="supContactTelPat" id="supContactTelPat" step="any" value="<?php echo $supContactTelPat;?>" placeholder="ค่ารักษาพยาบาล">
+                                            <input type="number" name="supContactTelPat" id="supContactTelPat"  value="<?php echo $supContactTelPat;?>" placeholder="เบอร์ผู้ติดต่อ (ผู้ป่วย)">
                                     </section>
                                 </div>
                                 <div class="row">
@@ -333,7 +332,7 @@ mysqli_close($conn);
                                     <section class="col col-4">
                                         <label class="label">&nbsp;</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="number" name="supContactTelPat" id="supContactTelPat" step=any value="<?php echo $supContactTelPat;?>" placeholder="ค่ารักษาพยาบาล">
+                                            <input type="text" name="supContactTelPat" id="supContactTelPat" value="<?php echo $supContactTelPat;?>" placeholder="เหตุผลการส่งตัว อื่นๆ">
                                     </section>
                                 </div>
                                 <div class="row">
@@ -383,7 +382,14 @@ mysqli_close($conn);
             }
         });
         loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
-
+        <?php
+            echo "var supraTypeId = \"" . $supraTypeId . "\";";        
+            echo "var paidT = \"" . $paidT . "\";";
+        ?>
+        //$('.supType option[value='+supraTypeId+']').attr('selected','selected');
+        //alert(supraTypeId);
+        $("#supType").val(supraTypeId);
+        $("#supPaidT").val(paidT);
         $('.datepicker').datepicker({
             format: 'dd/mm/yyyy',
             startDate: '-3d'
@@ -485,7 +491,7 @@ mysqli_close($conn);
                 ,'flag_new': $("#supFlagNew").val()
                 ,'flagPage': "supra" }, 
             success: function (data) {
-                alert('bbbbb'+data);
+                //alert('bbbbb'+data);
                 var json_obj = $.parseJSON(data);
                 for (var i in json_obj){
                     //alert("aaaa "+json_obj[i].success);
