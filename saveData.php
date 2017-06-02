@@ -161,6 +161,12 @@ if($_GET["flagPage"] === "company"){
     $pat_age=$_GET["pat_age"];
     $reason=$_GET["reason"];
     $pat_staff=$_GET["pat_staff"];
+    $diseased1=$_GET["diseased1"];
+    $diseased2=$_GET["diseased2"];
+    $diseased3=$_GET["diseased3"];
+    $diseased4=$_GET["diseased4"];
+    $drg=$_GET["drg"];
+    $on_top=$_GET["on_top"];
     $flag_new=$_GET["flag_new"];
     if(!is_numeric($paid)){
         $paid="0";
@@ -186,13 +192,17 @@ if($_GET["flagPage"] === "company"){
                 .", pat_name, pat_surname, branch_id, hosp_id "
                 .", doctor_name, paid, remark, contact_name_hosp"
                 .", contact_tele_hosp,contact_name_pat,contact_tele_pat, status_car"
-                .", pat_sex, pat_age, reason, pat_staff, active, date_create) "
+                .", pat_sex, pat_age, reason, pat_staff"
+                . ", diseased1, diseased2, diseased3, diseased4"
+                . ", drg, on_top, active, date_create) "
                 ."Values(UUID(),'".$supra_doc."','".$input_date."','".$supra_date."','"
                 .$hn."','".$pat_id."','".$paid_type_name."','".$supra_type_id."','"
                 .$pat_name."','".$pat_surname."','".$branch_id."','".$hosp_id."','"
                 .$doctor_name."','".$paid."','".$remark."','".$contact_name_hosp."','"
                 .$contact_tel_hosp."','".$contact_name_pat."','".$contact_tel_pat."','".$status_car."','"
-                .$pat_sex."','".$pat_age."','".$reason."','".$pat_staff."','1',now())";
+                .$pat_sex."','".$pat_age."','".$reason."','".$pat_staff."','"
+                .$diseased1."','".$diseased2."','".$diseased3."','".$diseased4."','"
+                .$drg."','".$on_top."','1',now())";
     }else{
         $sql="Update t_supra "
                 ."Set supra_doc = '".$supra_doc."' "
@@ -218,6 +228,12 @@ if($_GET["flagPage"] === "company"){
                 .", pat_age = '".$pat_age."' "
                 .", reason = '".$reason."' "
                 .", pat_staff = '".$pat_staff."' "
+                .", diseased1 = '".$diseased1."' "
+                .", diseased2 = '".$diseased2."' "
+                .", diseased3 = '".$diseased3."' "
+                .", diseased4 = '".$diseased4."' "
+                .", drg = '".$drg."' "
+                .", on_top = '".$on_top."' "
                 .", date_modi = now() "
                 ."Where supra_id = '".$supra_id."'";
     }

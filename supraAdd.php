@@ -86,7 +86,14 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         $supContactTelPat = $row["contact_tele_pat"];
         $supPatSex = $row["pat_sex"];
         $supPatStaff = $row["pat_staff"];
-        $statusCar = $row["status_car"];
+        $statusCar = $row["status_car"];//diseased1
+        $supDiseased1 = $row["diseased1"];//diseased1
+        $supDiseased2 = $row["diseased2"];//diseased1
+        $supDiseased3 = $row["diseased3"];//diseased1
+        $supDiseased4 = $row["diseased4"];//diseased1
+        $supDrg = $row["drg"];
+        $supOnTop = $row["on_top"];
+        $supStatusTravel = $row["status_travel"];
         if($supPatSex=="M"){
             $supPatSex1="checked='true'";
         }else{
@@ -279,14 +286,14 @@ mysqli_close($conn);
                                             <input type="text" name="supDoctor" id="supDoctor" value="<?php echo $supDoctor;?>" placeholder="แพทย์ผู้ส่งตัว">
                                             <div id="log" class="font-xs margin-top-10 text-danger"></div>
                                     </section>
-                                    <section class="col col-3">
-                                        <label class="label">ค่ารักษาพยาบาล</label>
-                                        <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="number" name="supPaid" id="supPaid" step=any value="<?php echo $supPaid;?>" placeholder="ค่ารักษาพยาบาล">
-                                    </section>
+                                    
                                     <section class="col col-3">
                                         <label class="label">&nbsp;</label>
                                         <label class="toggle state-error"><input type="checkbox" name="chkStatusCar" id="chkStatusCar" <?php echo $statusCar1;?> ><i data-swchon-text=" ผู้ส่ง" data-swchoff-text=" ผู้รับ"></i>รถรับส่ง</label>
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="label">&nbsp;</label>
+                                        <label class="toggle state-error"><input type="checkbox" name="chkStatusTravel" id="chkStatusTravel" <?php echo $supStatusTravel;?> ><i data-swchon-text=" ผู้ป่วยเดินทางเอง" data-swchoff-text=" โรงพยาบาลไปส่ง"></i>การเดินทาง</label>
                                     </section>
                                 </div>
                                 <div class="row">
@@ -336,10 +343,51 @@ mysqli_close($conn);
                                     </section>
                                 </div>
                                 <div class="row">
+                                    <section class="col col-6">
+                                        <label class="label">โรค 1.</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="supDiseased1" id="supDiseased1" value="<?php echo $supDiseased1;?>" placeholder="โรค 1.">
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="label">โรค 2.</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="supDiseased2" id="supDiseased2" value="<?php echo $supDiseased2;?>" placeholder="โรค 2.">
+                                    </section>
+                                </div>
+                                <div class="row">
+                                    <section class="col col-6">
+                                        <label class="label">โรค 3.</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="supDiseased3" id="supDiseased3" value="<?php echo $supDiseased3;?>" placeholder="โรค 1.">
+                                    </section>
+                                    <section class="col col-6">
+                                        <label class="label">โรค 4.</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="supDiseased4" id="supDiseased4" value="<?php echo $supDiseased4;?>" placeholder="โรค 2.">
+                                    </section>
+                                </div>
+                                <div class="row">
                                     <section class="col col-8">
                                         <label class="label">หมายเหตุ</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="remark" id="remark" value="<?php echo $remark;?>" placeholder="หมายเหตุ">
+                                    </section>
+                                </div>
+                                <div class="row" id="divDrg">
+                                    <section class="col col-4">
+                                        <label class="label">ค่ารักษาพยาบาล</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="number" name="supPaid" id="supPaid" step=any value="<?php echo $supPaid;?>" placeholder="ค่ารักษาพยาบาล">
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="label">DRG</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="supDrg" id="supDrg" value="<?php echo $supDrg;?>" placeholder="DRG">
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="label">on TOP</label>
+                                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                                            <input type="text" name="supOnTop" id="supOnTop" value="<?php echo $supOnTop;?>" placeholder="on TOP">
                                     </section>
                                 </div>
                             </fieldset>
@@ -358,7 +406,6 @@ mysqli_close($conn);
                                         </ul>
                                     </section>
                                 </div>
-                                
                             </footer>
                         </form>
                     </div>
@@ -378,7 +425,7 @@ mysqli_close($conn);
             prevText : '<i class="fa fa-chevron-left"></i>',
             nextText : '<i class="fa fa-chevron-right"></i>',
             onSelect : function(selectedDate) {
-                    $('#supInputDate').datepicker('option', 'minDate', selectedDate);
+                $('#supInputDate').datepicker('option', 'minDate', selectedDate);
             }
         });
         loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
@@ -395,6 +442,7 @@ mysqli_close($conn);
             startDate: '-3d'
         });
         $("#btnSave").click(saveSupra);
+        $("#divDrg").hide();
         $("#supDoctor").autocomplete({
             source : function(request, response) {
                 //alert("bbbb");
@@ -488,6 +536,12 @@ mysqli_close($conn);
                 ,'pat_age': $("#patAge").val()
                 ,'reason': $("#supReason").val()
                 ,'pat_staff': $("#supPatStaff").val()
+                ,'diseased1': $("#supDiseased1").val()
+                ,'diseased2': $("#supDiseased2").val()
+                ,'diseased3': $("#supDiseased3").val()
+                ,'diseased4': $("#supDiseased4").val()
+                ,'drg': $("#supDrg").val()
+                ,'on_top': $("#supOnTop").val()
                 ,'flag_new': $("#supFlagNew").val()
                 ,'flagPage': "supra" }, 
             success: function (data) {
