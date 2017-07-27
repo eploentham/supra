@@ -624,6 +624,11 @@ $page_nav = array(
                 "title" => "ข้อมูลโรงพยาบาล Supra",
                 "url" => "hospitalView.php",
                 "label_htm" => ' <span class="badge inbox-badge bg-color-greenLight">responsive</span>'
+            ),
+            "hnReceive" => array(
+                "title" => "ข้อมูล HN",
+                "url" => "hnReceiveAdd.php",
+                "label_htm" => ' <span class="badge inbox-badge bg-color-greenLight">responsive</span>'
             )
         )
     ),
