@@ -38,6 +38,13 @@ $supPatStaff="";
 $supPatSex1="";
 $statusCar="";
 $statusCar1="";
+$supStatusTravel="";
+$supDiseased1="";
+$supDiseased2 ="";
+$supDiseased3 ="";
+$supDiseased4 ="";
+$supDrg ="";
+$supOnTop ="";
 if(isset($_GET["supraId"])){
     $supId = $_GET["supraId"];
     $supFlagNew = "old";
@@ -211,7 +218,7 @@ mysqli_close($conn);
                                     </section>
                                 </div>
                                 <div class="row">
-                                    <section class="col col-3">
+                                    <section class="col col-2">
                                         <label class="label">HN</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="supHN" id="supHN" value="<?php echo $supHN;?>" placeholder="HN">
@@ -220,6 +227,11 @@ mysqli_close($conn);
                                         <label class="label">เลขบัตรประชาชน</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="supPatID" id="supPatID" value="<?php echo $supPatID;?>" placeholder="เลขบัตรประชาชน">
+                                        
+                                    </section>
+                                    <section class="col col-1">
+                                        <label class="label">&nbsp;</label>
+                                        <button type="button" id="btnSearchHn" class="btn btn-primary">...</button>
                                     </section>
                                     <section class="col col-3">
                                         <label class="label">สิทธิ</label>
