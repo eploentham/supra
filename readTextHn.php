@@ -49,18 +49,20 @@ while(!feof($myfile)) {
     $read = fgets($myfile);
     $row1++;
     $id = substr($read,0, 13);
-    $id1 = substr($read,13, 26);
-    $name = substr($read,26, 73);
-  $sql = "Insert Into hn_t_data(data_id, branch_id, month_id, year_id, period_id"
+    $id1 = substr($read,13, 22);
+    $name = substr($read,26, 102);
+    $codeHosp = substr($read,102, 106);
+    
+    //$name = iconv('MS-ANSI', 'UTF-8', $name);
+    //$name = utf8_encode($name);
+    $sql = "Insert Into hn_t_data(data_id, branch_id, month_id, year_id, period_id"
             .", row1, id, full_name"
-            .", id1, date_create) "
+            .", id1, hosp_code, date_create) "
             ."Values(UUID(), '".$_GET["branch_id"]."','".$_GET["month_id"]."','".$_GET["year_id"]."','".$_GET["period_id"]."' "
-            .", '".$row1."', '".$id."', '".$name."', '".$id1.", now())";
+            .", '".$row1."', '".$id."', '".$name."', '".$id1."', '".$codeHosp."', now())";
     if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
 
     }
-  
-  
 }
 fclose($myfile);
 
@@ -72,8 +74,8 @@ $response = array();
 $resultArray = array();
 $response["success"] = 1;
 $response["message"] = "success";
-$response["row_cnt"] = $rowCnt;
-$response["patient_cnt"] = $cnt;
+$response["row_cnt"] = $row1;
+//$response["patient_cnt"] = $cnt;
 array_push($resultArray,$response);
 echo json_encode($resultArray);
 //$sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);

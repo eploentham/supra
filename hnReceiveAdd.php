@@ -101,7 +101,7 @@ mysqli_close($conn);
 
                                             <!-- widget content -->
                                             <div class="widget-body col col-lg-12">
-                                                <form action="upload1.php" class="dropzone" id="mydropzone">
+                                                <form action="upload.php" class="dropzone" id="mydropzone">
                                                     <!--<input type="hidden" name="cboBranch1" id="cboBranch1" value="2">
                                                     <input type="hidden" name="cboYear1" id="cboYear1" value="2017">
                                                     <input type="hidden" name="cboMonth1" id="cboMonth1" value="3">
@@ -319,7 +319,7 @@ mysqli_close($conn);
                 , data: {  'flagPage':"readTextHn"
                     , 'month_id':$("#cboMonth").val(), 'year_id':$("#cboYear").val(), 'period_id':$("#cboPeriod").val(),'branch_id':$("#cboBranch").val()}
                 , success: function (data) {
-//                    alert('bbbbb'+data);
+                    alert('bbbbb'+data);
                     var json_obj = $.parseJSON(data);
                     
                     for (var i in json_obj)
