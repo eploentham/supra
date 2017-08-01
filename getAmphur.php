@@ -221,6 +221,31 @@ if($_GET['flagPage']=="amphur"){
         }
         $result->free();
     }
+}else if($_GET['flagPage']=="get_hn"){
+    $sql="Select * From hn_t_data Where id = '".$_GET['pat_id']."'  ";
+    if ($result=mysqli_query($conn,$sql)){
+        $ok="";
+        $err="";
+        if(!$result){
+            $ok="0";
+            $err= mysql_error();
+            $tmp = array();
+            $tmp["error"] = $err;
+            $tmp["sql"] = $sql;
+            array_push($resultArray,$tmp);
+        }else{
+            $ok="1";
+            $tmp = array();
+            $tmp["sql"] = $sql;
+            array_push($resultArray,$tmp);
+            while($row = mysqli_fetch_array($result)){        
+                $tmp["full_name"] = $row["full_name"];
+                $tmp["hosp_code"] = $row["hosp_code"];
+                array_push($resultArray,$tmp);
+            }
+        }
+        $result->free();
+    }
 }
 
 mysqli_close($conn);

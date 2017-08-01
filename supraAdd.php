@@ -454,6 +454,7 @@ mysqli_close($conn);
             startDate: '-3d'
         });
         $("#btnSave").click(saveSupra);
+        $("#btnSearchHn").click(getHN);
         $("#divDrg").hide();
         $("#supDoctor").autocomplete({
             source : function(request, response) {
@@ -569,6 +570,24 @@ mysqli_close($conn);
                     $("#uiLoading").hide();
                     $("#supVali").empty();
                     $("#supVali").append("บันทึกข้อมูลเรียบร้อย");
+                }
+//                    alert('bbbbb '+json_obj.length);
+//                    alert('ccccc '+$("#cDistrict").val());
+                //$("#cZipcode").val("aaaa");
+            }
+        });
+    }
+    function getHN(){
+        //alert('aaaaa');
+        $.ajax({
+            type: 'GET', url: 'getAmphur.php', contentType: "application/json", dataType: 'text', 
+            data: { 'pat_id': $("#supPatID").val()
+                ,'flagPage': "get_hn" }, 
+            success: function (data) {
+                alert('bbbbb'+data);
+                var json_obj = $.parseJSON(data);
+                for (var i in json_obj){
+                    $("#supPatName").val(json_obj[i].full_name);
                 }
 //                    alert('bbbbb '+json_obj.length);
 //                    alert('ccccc '+$("#cDistrict").val());

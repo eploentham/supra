@@ -45,13 +45,21 @@ $id="";
 $id1="";
 $read="";
 $name="";
+$sql="Delete from hn_t_data";
+if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
+
+}
 while(!feof($myfile)) {
     $read = fgets($myfile);
     $row1++;
     $id = substr($read,0, 13);
-    $id1 = substr($read,13, 22);
-    $name = substr($read,26, 102);
-    $codeHosp = substr($read,102, 106);
+    $id1 = substr($read,13, 13);
+    $pname = substr($read,26, 15);
+    //$pname = iconv("UTF-8", "ISO-8859-1", $read);
+    $pname = mb_detect_encoding($pname, "ASCII, UTF-8, UNICODE");
+    $name = substr($read,51, 30);
+    $lname = substr($read,71, 30);
+    $codeHosp = substr($read,103, 7);
     
     //$name = iconv('MS-ANSI', 'UTF-8', $name);
     //$name = utf8_encode($name);
@@ -59,7 +67,7 @@ while(!feof($myfile)) {
             .", row1, id, full_name"
             .", id1, hosp_code, date_create) "
             ."Values(UUID(), '".$_GET["branch_id"]."','".$_GET["month_id"]."','".$_GET["year_id"]."','".$_GET["period_id"]."' "
-            .", '".$row1."', '".$id."', '".$name."', '".$id1."', '".$codeHosp."', now())";
+            .", '".$row1."', '".$id."', '".trim($pname)."', '".$id1."', '".$codeHosp."', now())";
     if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
 
     }
