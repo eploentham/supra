@@ -56,7 +56,8 @@ while(!feof($myfile)) {
     $id1 = substr($read,13, 13);
     $pname = substr($read,26, 15);
     //$pname = iconv("UTF-8", "ISO-8859-1", $read);
-    $pname = mb_detect_encoding($pname, "ASCII, UTF-8, UNICODE");
+    //$pname = mb_detect_encoding($pname, "ASCII, UTF-8, UNICODE");
+    $pname = mb_convert_encoding( $pname, 'UTF-8' ); 
     $name = substr($read,51, 30);
     $lname = substr($read,71, 30);
     $codeHosp = substr($read,103, 7);
