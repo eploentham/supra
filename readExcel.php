@@ -83,31 +83,29 @@ $name="";
 $nameOld="";
 $cnt=0;
 $rowCnt=0;
+$sql="Delete from hn_t_data";
+if ($result1=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
+}
 foreach ($namedDataArray as $result) {
     $row1++;
     $rowCnt++;
 
-    $sql = "Insert Into hn_t_data(data_id, branch_id, month_id, year_id, period_id"
-            .", row1, id, id1, full_name"
-            .", fname, lname, hosp_code, date_start, date_end"
+    $sql = "Insert Into hn_t_data(data_id, branch_id, month_id, year_id, period_id "
+            .", row1, id, id1, full_name "
+            .", fname, lname, hosp_code, date_start, date_end "
             .", date_birthday, date_create) "
             ."Values(UUID(), '".$_GET["branch_id"]."','".$_GET["month_id"]."','".$_GET["year_id"]."','".$_GET["period_id"]."' "
-            .", '".$row1."', '".$result[0]."', '".$result[1]."', '".$result[5]."', '"
-            .$result[2]." ".$result[3]."' ".", '".$result[4]."', '".$result[6]."', '".$result[8]."', '".$result[9]."', '".$result[10].", now())";
+            .", '".$row1."', '".$result[1]."', '".$result[2]."', '".$result[6]."', '"
+            .$result[3]." ".$result[4]."', '".$result[5]."', '".$result[7]."', '".$result[9]."', '".$result[10]."', '".$result[11]."', now())";
+//    $sql = "Insert Into hn_t_data(data_id, branch_id, month_id, year_id, period_id "
+//            .", row1, id, id1, full_name "
+//            .", fname, lname, hosp_code, date_create) "
+//            ."Values(UUID(), '".$_GET["branch_id"]."','".$_GET["month_id"]."','".$_GET["year_id"]."','".$_GET["period_id"]."' "
+//            .", '".$row1."', '".$result[1]."', '".$result[1]."', '".$result[2]."', '"
+//            .$result[2]." ".$result[3]."', '".$result[4]."', '".$result[2]."', now())";
     if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
-//        if($rowCnt==100){
-//            echo "100";
-//        }
-//        if($rowCnt==200){
-//            echo "200";
-//        }
-//        if($rowCnt==300){
-//            echo "300";
-//        }
-//        if($rowCnt==400){
-//            echo "400";
-//        }
     }
+    
 }
 
 //$result->free();

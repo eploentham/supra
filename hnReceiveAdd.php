@@ -101,7 +101,7 @@ mysqli_close($conn);
 
                                             <!-- widget content -->
                                             <div class="widget-body col col-lg-12">
-                                                <form action="upload.php" class="dropzone" id="mydropzone">
+                                                <form action="upload1.php" class="dropzone" id="mydropzone">
                                                     <!--<input type="hidden" name="cboBranch1" id="cboBranch1" value="2">
                                                     <input type="hidden" name="cboYear1" id="cboYear1" value="2017">
                                                     <input type="hidden" name="cboMonth1" id="cboMonth1" value="3">
