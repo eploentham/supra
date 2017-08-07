@@ -6,15 +6,15 @@ $ds          = DIRECTORY_SEPARATOR;  //1
 $storeFolder = 'uploads';   //2
  
 if (!empty($_FILES)) {
-    $name = $_FILES['file']['name'];
-    if(strpos($_FILES['file']['name'], ".xls")>0){
-//        $name = substr($name,strpos($_FILES['file']['name'], ".xls"));
-        $name = ".xls";
-    }
-    if(strpos($_FILES['file']['name'], ".xlsx")>0){
-//        $name = substr($name,strpos($_FILES['file']['name'], ".xlsx")) ;
-        $name = ".xlsx";
-    }
+    //$name = $_FILES['file']['name'];
+//    if(strpos($_FILES['file']['name'], ".xls")>0){
+////        $name = substr($name,strpos($_FILES['file']['name'], ".xls"));
+//        $name = ".xls";
+//    }
+//    if(strpos($_FILES['file']['name'], ".xlsx")>0){
+////        $name = substr($name,strpos($_FILES['file']['name'], ".xlsx")) ;
+//        $name = ".xlsx";
+//    }
     
     $year1="";
     $month="";
@@ -29,7 +29,7 @@ if (!empty($_FILES)) {
     $targetFile =  $targetPath.$year.$name;  //5
  
     move_uploaded_file($tempFile,$targetFile); //6
-    $_SESSION['bn_supra_excel'] = $targetFile;
+    $_SESSION['bn_hn_text'] = $targetFile;
     echo "<P>FILE UPLOADED TO: $targetFile</P>";
 }
 ?>
