@@ -237,10 +237,19 @@ if($_GET['flagPage']=="amphur"){
             $ok="1";
             $tmp = array();
             $tmp["sql"] = $sql;
+            
+            
             array_push($resultArray,$tmp);
-            while($row = mysqli_fetch_array($result)){        
+            while($row = mysqli_fetch_array($result)){
+                $year = substr($row["date_birthday"],0,4);
+                $age = ((int)date("Y") - ((int)$year-543));
                 $tmp["full_name"] = $row["full_name"];
                 $tmp["hosp_code"] = $row["hosp_code"];
+                $tmp["pname"] = $row["pname"];
+                $tmp["fname"] = $row["fname"];
+                $tmp["lname"] = $row["lname"];
+                $tmp["hosp_code"] = $row["hosp_code"];
+                $tmp["age"] = $age;
                 array_push($resultArray,$tmp);
             }
         }

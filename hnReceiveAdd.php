@@ -315,11 +315,11 @@ mysqli_close($conn);
 //            alert("111");
             $("#loading").addClass("fa-spin");
             $.ajax({
-                type: 'GET', url: 'readExcel.php', contentType: "application/json", dataType: 'text'
+                type: 'GET', url: 'readTextHn.php', contentType: "application/json", dataType: 'text'
                 , data: {  'flagPage':"readExcel"
                     , 'month_id':$("#cboMonth").val(), 'year_id':$("#cboYear").val(), 'period_id':$("#cboPeriod").val(),'branch_id':$("#cboBranch").val()}
                 , success: function (data) {
-//                    alert('bbbbb'+data);
+                    alert('bbbbb'+data);
                     var json_obj = $.parseJSON(data);
                     
                     for (var i in json_obj)

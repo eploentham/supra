@@ -20,16 +20,17 @@ if (!empty($_FILES)) {
     $month="";
 //    $year1=$_GET["cboUear1"];
 //    $month=$_GET["cboMonth1"];
-    $year=date("Y")."-".date("m")."-".date("d")."-".date("H")."".date("i")."".date("s");
+    //$year=date("Y")."-".date("m")."-".date("d")."-".date("H")."".date("i")."".date("s");
     $tempFile = $_FILES['file']['tmp_name'];          //3             
       
     $targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds;  //4
      
-//    $targetFile =  $targetPath. $_FILES['file']['name'];  //5
-    $targetFile =  $targetPath.$year.$name;  //5
+    $targetFile =  $targetPath. $_FILES['file']['name'];  //5
+//    $targetFile =  $targetPath.$year.$name;  //5
  
     move_uploaded_file($tempFile,$targetFile); //6
-    $_SESSION['bn_supra_excel'] = $targetFile;
+    //$_SESSION['bn_supra_excel'] = $targetFile;
+    $_SESSION['bn_hn_text'] = $targetFile;
     echo "<P>FILE UPLOADED TO: $targetFile</P>";
 }
 ?>

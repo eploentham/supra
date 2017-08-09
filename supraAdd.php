@@ -124,9 +124,9 @@ if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
     $oBranch = "<option value='0' selected='' disabled=''>เลือก สาขา</option>";
     while($row = mysqli_fetch_array($result)){
         if($branchId===$row["branch_id"]){
-            $oBranch .= '<option selected value='.$row["branch_id"].'>'.$row["branch_name"].'</option>';
+            $oBranch .= '<option selected value='.$row["branch_code"].'>'.$row["branch_name"].'</option>';
         }else{
-            $oBranch .= '<option value='.$row["branch_id"].'>'.$row["branch_name"].'</option>';
+            $oBranch .= '<option value='.$row["branch_code"].'>'.$row["branch_name"].'</option>';
         }
     }
 }else{
@@ -238,9 +238,9 @@ mysqli_close($conn);
                                         <label class="select">
                                             <select name="supPaidT" id="supPaidT">
                                                 <option value="0" disabled="disabled">เลือกประเภท สิทธิ</option>
-                                                <option value="ปกส บางนา1">ปกส บางนา1</option>
-                                                <option value="ปกส บางนา2">ปกส บางนา2</option>
-                                                <option value="ปกส บางนา5">ปกส บางนา5</option>
+                                                <option value="2210028">ปกส บางนา1</option>
+                                                <option value="2211006">ปกส บางนา2</option>
+                                                <option value="2211041">ปกส บางนา5</option>
                                             </select> <i></i> </label>
                                     </section>
                                     <section class="col col-3">
@@ -584,10 +584,27 @@ mysqli_close($conn);
             data: { 'pat_id': $("#supPatID").val()
                 ,'flagPage': "get_hn" }, 
             success: function (data) {
-                alert('bbbbb'+data);
+//                alert('bbbbb'+data);
                 var json_obj = $.parseJSON(data);
                 for (var i in json_obj){
-                    $("#supPatName").val(json_obj[i].full_name);
+                    $("#supPatName").val(json_obj[i].pname+' '+json_obj[i].fname);
+                    $("#supPatSurname").val(json_obj[i].lname);
+                    $("#patAge").val(json_obj[i].age);
+                    $("#supPaidT").val(json_obj[i].hosp_code);
+                    if(json_obj[i].hosp_code==="2210028"){
+                        $("#supBranch").val("000");
+                    }else if(json_obj[i].hosp_code==="2211006"){
+                        $("#supBranch").val("001");
+                    }else if(json_obj[i].hosp_code==="2211006"){
+                        $("#supBranch").val("002");
+                    }
+                    if(json_obj[i].pname==="นาง"){
+                        //alert("aaaaa");
+                        $("#supPatSex").attr('checked', false);                        
+                    }else if(json_obj[i].pname==="นาย"){
+                        //alert("bbbb");
+                        $("#supPatSex").attr('checked', true);                        
+                    }
                 }
 //                    alert('bbbbb '+json_obj.length);
 //                    alert('ccccc '+$("#cDistrict").val());

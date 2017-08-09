@@ -5,6 +5,7 @@ require_once 'Classes/PHPExcel.php';
 
 /** PHPExcel_IOFactory - Reader */
 include 'Classes/PHPExcel/IOFactory.php';
+//ini_set("memory_limit", "370M");
 $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 //if(!$conn){
 //    echo mysqli_error($conn);
@@ -12,34 +13,34 @@ $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 //    return;
 //}
 mysqli_set_charset($conn, "UTF8");
-if (isset($_SESSION['bn_supra_excel'])) {
-    if (file_exists($_SESSION['bn_supra_excel'])) {
-        $inputFileName = $_SESSION['bn_supra_excel'];
-    }else{
-        header('Content-Type: application/json');
-        $response = array();
-        $resultArray = array();
-        $response["success"] = 0;
-        $response["message"] = "Error non found File name";
-        $response["row_cnt"] = $rowCnt;
-        $response["patient_cnt"] = $cnt;
-        array_push($resultArray,$response);
-        echo json_encode($resultArray);
-        return;
-    }
-}else{
-    header('Content-Type: application/json');
-    $response = array();
-    $resultArray = array();
-    $response["success"] = 0;
-    $response["message"] = "Error File upload";
-    $response["row_cnt"] = 0;
-    $response["patient_cnt"] = 0;
-    array_push($resultArray,$response);
-    echo json_encode($resultArray);
-    return;
-}
-//$inputFileName = "uploads/11111.xlsx";  
+//if (isset($_SESSION['bn_supra_excel'])) {
+//    if (file_exists($_SESSION['bn_supra_excel'])) {
+//        $inputFileName = $_SESSION['bn_supra_excel'];
+//    }else{
+//        header('Content-Type: application/json');
+//        $response = array();
+//        $resultArray = array();
+//        $response["success"] = 0;
+//        $response["message"] = "Error non found File name";
+//        $response["row_cnt"] = $rowCnt;
+//        $response["patient_cnt"] = $cnt;
+//        array_push($resultArray,$response);
+//        echo json_encode($resultArray);
+//        return;
+//    }
+//}else{
+//    header('Content-Type: application/json');
+//    $response = array();
+//    $resultArray = array();
+//    $response["success"] = 0;
+//    $response["message"] = "Error File upload";
+//    $response["row_cnt"] = 0;
+//    $response["patient_cnt"] = 0;
+//    array_push($resultArray,$response);
+//    echo json_encode($resultArray);
+//    return;
+//}
+$inputFileName = dirname( __FILE__ )."/uploads/11111.xlsx";  
 $inputFileType = PHPExcel_IOFactory::identify($inputFileName);  
 $objReader = PHPExcel_IOFactory::createReader($inputFileType);  
 $objReader->setReadDataOnly(true);  
