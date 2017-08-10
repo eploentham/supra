@@ -157,6 +157,7 @@ if($_GET["flagPage"] === "company"){
     $contact_name_pat=$_GET["contact_name_pat"];
     $contact_tel_pat=$_GET["contact_tel_pat"];
     $status_car=$_GET["status_car"];
+    $status_travel=$_GET["status_travel"];
     $pat_sex=$_GET["pat_sex"];
     $pat_age=$_GET["pat_age"];
     $reason=$_GET["reason"];
@@ -189,12 +190,12 @@ if($_GET["flagPage"] === "company"){
 //    if(($_GET["vend_id"]==="-")|| ($_GET["vend_id"]==="")){
         $sql="Insert Into t_supra(supra_id, supra_doc, input_date, supra_date "
                 .", hn, pat_id, paid_type_name, supra_type_id "
-                .", pat_name, pat_surname, branch_id, hosp_id "
+                .", pat_name, pat_surname, branch_code, hosp_id "
                 .", doctor_name, paid, remark, contact_name_hosp"
                 .", contact_tele_hosp,contact_name_pat,contact_tele_pat, status_car"
                 .", pat_sex, pat_age, reason, pat_staff"
                 . ", diseased1, diseased2, diseased3, diseased4"
-                . ", drg, on_top, active, date_create) "
+                . ", drg, on_top, status_travel, active, date_create) "
                 ."Values(UUID(),'".$supra_doc."','".$input_date."','".$supra_date."','"
                 .$hn."','".$pat_id."','".$paid_type_name."','".$supra_type_id."','"
                 .$pat_name."','".$pat_surname."','".$branch_id."','".$hosp_id."','"
@@ -202,7 +203,7 @@ if($_GET["flagPage"] === "company"){
                 .$contact_tel_hosp."','".$contact_name_pat."','".$contact_tel_pat."','".$status_car."','"
                 .$pat_sex."','".$pat_age."','".$reason."','".$pat_staff."','"
                 .$diseased1."','".$diseased2."','".$diseased3."','".$diseased4."','"
-                .$drg."','".$on_top."','1',now())";
+                .$drg."','".$on_top."','".$status_travel."','1',now())";
     }else{
         $sql="Update t_supra "
                 ."Set supra_doc = '".$supra_doc."' "
@@ -214,7 +215,7 @@ if($_GET["flagPage"] === "company"){
                 .", supra_type_id = '".$supra_type_id."' "
                 .", pat_name = '".$pat_name."' "
                 .", pat_surname = '".$pat_surname."' "
-                .", branch_id = '".$branch_id."' "
+                .", branch_code = '".$branch_id."' "
                 .", hosp_id = '".$hosp_id."' "
                 .", doctor_name = '".$doctor_name."' "
                 .", paid = ".$paid." "
@@ -234,6 +235,7 @@ if($_GET["flagPage"] === "company"){
                 .", diseased4 = '".$diseased4."' "
                 .", drg = '".$drg."' "
                 .", on_top = '".$on_top."' "
+                .", status_travel = '".$status_travel."' "
                 .", date_modi = now() "
                 ."Where supra_id = '".$supra_id."'";
     }
@@ -491,6 +493,13 @@ if($_GET["flagPage"] === "company"){
         ." active = '3' "
         .", date_cancel = now() "
         ."Where return_id = '".$return_id."'";
+}else if($_GET["flagPage"] === "void_supra"){
+    $sup_id=$_GET["sup_id"];
+    $sql="Update t_supra "
+        ."Set  "
+        ." active = '3' "
+        .", date_cancel = now() "
+        ."Where supra_id = '".$sup_id."'";
 }else if($_GET["flagPage"] === "void_goods"){
     $goods_id=$_GET["goods_id"];
     $sql="Update b_goods "

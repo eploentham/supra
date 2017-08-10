@@ -28,7 +28,7 @@ $supHosp="";
 $supId="";
 $supBranch="";
 $supFlagNew="";
-$branchId="";
+$branchCode="";
 $supContactNameHosp="";
 $supContactTelHosp="";
 $supContactNamePat="";
@@ -39,12 +39,14 @@ $supPatSex1="";
 $statusCar="";
 $statusCar1="";
 $supStatusTravel="";
+$supStatusTravel1="";
 $supDiseased1="";
 $supDiseased2 ="";
 $supDiseased3 ="";
 $supDiseased4 ="";
 $supDrg ="";
 $supOnTop ="";
+$reason="";
 if(isset($_GET["supraId"])){
     $supId = $_GET["supraId"];
     $supFlagNew = "old";
@@ -60,7 +62,7 @@ $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 mysqli_set_charset($conn, "UTF8");
 $sql="Select sup.*, br.branch_name "
         ."From t_supra sup "
-        ."Left Join b_branch br on br.branch_id = sup.branch_id "
+        ."Left Join b_branch br on br.branch_code = sup.branch_code "
         ."Where sup.supra_id = '".$supId."' ";
 //echo "<script> alert('aaaaa'); </script>";
 //$rComp = mysqli_query($conn,"Select * From b_company Where comp_id = '1' ");
@@ -73,7 +75,7 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         $supInputDate = ($row["input_date"]);
         $supSupraDate = substr($supSupraDate,strlen($supSupraDate)-2)."-".substr($supSupraDate,5,2)."-".substr($supSupraDate,0,4);
         $supInputDate = substr($supInputDate,strlen($supInputDate)-2)."-".substr($supInputDate,5,2)."-".substr($supInputDate,0,4);
-        $branchId = ($row["branch_id"]);
+        $branchCode = ($row["branch_code"]);
         $hospId = ($row["hosp_id"]);
         $supHN = ($row["hn"]);
         $supPatID = ($row["pat_id"]);
@@ -101,15 +103,21 @@ if ($rComp=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         $supDrg = $row["drg"];
         $supOnTop = $row["on_top"];
         $supStatusTravel = $row["status_travel"];
-        if($supPatSex=="M"){
-            $supPatSex1="checked='true'";
+        $reason = $row["reason"];
+        if($supPatSex==="M"){
+            $supPatSex1="true";
         }else{
-            $supPatSex1="checked='false'";
+            $supPatSex1="false";
         }
-        if($statusCar=="1"){
-            $statusCar1="checked='true'";
+        if($statusCar==="1"){
+            $statusCar1="true";
         }else{
-            $statusCar1="checked='false'";
+            $statusCar1="false";
+        }
+        if($supStatusTravel==="1"){
+            $supStatusTravel1="true";
+        }else{
+            $supStatusTravel1="false";
         }
     }
     //$aHosp = mysqli_fetch_array($rComp);
@@ -123,7 +131,7 @@ $sql="Select * From b_branch Where active = '1' Order By branch_name";
 if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
     $oBranch = "<option value='0' selected='' disabled=''>เลือก สาขา</option>";
     while($row = mysqli_fetch_array($result)){
-        if($branchId===$row["branch_id"]){
+        if($branchCode===$row["branch_code"]){
             $oBranch .= '<option selected value='.$row["branch_code"].'>'.$row["branch_name"].'</option>';
         }else{
             $oBranch .= '<option value='.$row["branch_code"].'>'.$row["branch_name"].'</option>';
@@ -136,13 +144,23 @@ $sql="Select * From b_hospital Where active = '1' Order By hosp_name_t";
 //$result = mysqli_query($conn,"Select * From f_company_type Where active = '1' Order By comp_type_code");
 if ($result=mysqli_query($conn,$sql)){
     $oHosp = "<option value='0' selected='' disabled=''>เลือก โรงพยาบาล</option>";
-    while($row = mysqli_fetch_array($result)){
+    while($row = mysqli_fetch_assoc($result)){
         if($hospId===$row["hosp_id"]){
             $oHosp .= '<option selected value='.$row["hosp_id"].'>'.$row["hosp_name_t"].'</option>';
         }else{
             $oHosp .= '<option value='.$row["hosp_id"].'>'.$row["hosp_name_t"].'</option>';
         }
     }
+}
+$sql="Select distinct doctor_name From t_supra Where active = '1'";
+$autoDoctor = array();
+if ($result=mysqli_query($conn,$sql)){
+    while($row = mysqli_fetch_array($result)){
+        //$autoDoctor .= $row['doctor_name'];
+        array_push($autoDoctor,$row['doctor_name']);
+        //$data[] = $row['skill'];
+    }
+    //$autoDoctor = substr($autoDoctor,0, strlen($autoDoctor)-1);
 }
 $rComp->free();
 mysqli_close($conn);
@@ -384,6 +402,14 @@ mysqli_close($conn);
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="remark" id="remark" value="<?php echo $remark;?>" placeholder="หมายเหตุ">
                                     </section>
+                                    <section class="col col-2">    
+                                        <label class="label">&nbsp;</label>
+                                        <label class="toggle state-error"><input type="checkbox" name="chkSupraVoid" checked="true" id="chkSupraVoid"><i data-swchon-text="ใช้งาน" data-swchoff-text="ยกเลิก"></i>สถานะ</label>
+                                    </section>
+                                    <section class="col col-2" >    
+                                        <label class="label">&nbsp;&nbsp;</label>
+                                        <button type="button" id="btnSupraVoid" class="btn btn-primary btn-sm">ต้องการยกเลิก</button>
+                                    </section>
                                 </div>
                                 <div class="row" id="divDrg">
                                     <section class="col col-4">
@@ -426,6 +452,14 @@ mysqli_close($conn);
         </article>
     </div>
 </section>
+<script>
+  $( function() {//$autoDoctor
+    var availableTags =  <?php echo json_encode($autoDoctor); ?>;
+    $( "#supDoctor" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
 <script type="text/javascript">
     $(document).ready(function() {
         pageSetUp();
@@ -453,38 +487,95 @@ mysqli_close($conn);
             format: 'dd/mm/yyyy',
             startDate: '-3d'
         });
+        $("#supPatSex").prop("checked", <?php echo $supPatSex1?>);
+        $("#chkStatusCar").prop("checked", <?php echo $statusCar1?>);
+        $("#chkStatusTravel").prop("checked", <?php echo $supStatusTravel1?>);
+        $("#supReason").val(<?php echo $reason?>);
         $("#btnSave").click(saveSupra);
         $("#btnSearchHn").click(getHN);
-        $("#divDrg").hide();
-        $("#supDoctor").autocomplete({
-            source : function(request, response) {
-                //alert("bbbb");
-                $.ajax({
-                    type: 'GET',  url : "getAmphur.php", contentType: "application/json", dataType : "json",
-                    data : {
-                        featureClass : "P",
-                        style : "full",
-                        maxRows : 12,
-                        flagPage: "searchDoctor",
-                        name_startsWith : request.term
+        //$("#divDrg").hide();
+        $("#chkSupraVoid").click(checkBtnVoid);
+        $("#btnSupraVoid").click(voidSupra);
+        hideBtnVoid();
+        function checkBtnVoid(){
+            if($("#chkSupraVoid").is(':checked'))
+                $("#btnSupraVoid").hide();  // checked
+            else
+                $("#btnSupraVoid").show();  // unchecked
+//            $("#btnGoVoid").show();
+        }
+        function hideBtnVoid(){
+            $("#btnSupraVoid").hide();
+        }
+        function voidSupra(){
+            $("#uiLoading").show();
+            $("#loading").addClass("fa-spin");
+            //$("#veAmphur").empty();
+            $.confirm({
+                title: 'ต้องการยกเลิก สินค้า!',
+                content: 'ยกเลิก เลขที่เอกสาร '+$("#supraDoc").val()+' ชื่อผู้ป่วย '+$("#supPatName").val()+' '+$("#supPatSurname").val(),
+                buttons: {
+                    confirm: function () {
+                        //$.alert("hello222 "+td.attr("id"));
+                        voidSupra1();
+                        //voidStock();
                     },
-                    success : function(data) {
-                       //alert("aaaa"+data);
-                       //var json_obj = $.parseJSON(data);
-                       //alert("aaaa"+json_obj);
-                        response($.map(data, function(item) {
-                            return {
-                                    label : item.name ,value : item.name
-                            }
-                        }));
+                    cancel: function () {
+                        $.alert('Canceled!');
                     }
-                });
-            },
-            minLength : 2,
-            select : function(event, ui) {
-                    log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
-            }
-        });
+                }
+            });
+        }
+        function voidSupra1(){
+            //$.alert("hello222 "+$("#veId").val());
+            $.ajax({ 
+                type: 'GET', url: 'saveData.php', contentType: "application/json", dataType: 'text', data: { 'sup_id': $("#supId").val(), 'flagPage':"void_supra" }, 
+                success: function (data) {
+//                    alert('bbbbb'+data);
+                    var json_obj = $.parseJSON(data);
+                    $("#loading").removeClass("fa-spin");
+                    $("#uiLoading").hide();
+                    $("#supVali").empty();
+                    for (var i in json_obj)
+                    {
+//                        $.alert({
+//                            title: 'Save Data',
+//                            content: 'ยกเลิกข้อมูลเรียบร้อย',
+//                        });
+                        window.location.assign('#supraView.php');
+                    }
+                }
+            });
+        }
+//        $("#supDoctor").autocomplete({
+//            source : function(request, response) {
+////                alert("bbbb");
+//                $.ajax({
+//                    type: 'GET',  url : "getAmphur.php", contentType: "application/json", dataType : "text",
+//                    data : {
+//                        featureClass : "P",
+//                        style : "full",
+//                        maxRows : 12,
+//                        flagPage: "searchDoctor",
+//                        name_startsWith : request.term
+//                    },
+//                    success : function(data) {
+////                       alert("aaaa"+data);
+//                       //var json_obj = $.parseJSON(data);
+//                       //alert("aaaa"+json_obj);
+//                        response($.map(data, function(item) {
+//                            return {
+//                                    label : item.name ,value : item.name
+//                            }
+//                        }));
+//                    }
+//                });
+//            },
+//            minLength : 2,
+//            select : function(event, ui) {
+//                    log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+//            }
+//        });
     });
     
     
@@ -509,7 +600,7 @@ mysqli_close($conn);
             $("#supVali").append("วันที่สงตัว ไม่มีค่า");
             return;
         }
-        var suppatSex = "", statusCar="";
+        var suppatSex = "", statusCar="", statusTravel="";
         
         if($("#supPatSex").is(':checked')){
             suppatSex = "M";
@@ -520,6 +611,11 @@ mysqli_close($conn);
             statusCar = "1";
         }else{
             statusCar = "0";
+        }
+        if($("#chkStatusTravel").is(':checked')){
+            statusTravel = "1";
+        }else{
+            statusTravel = "0";
         }
         $("#uiLoading").show();
         $("#loading").addClass("fa-spin");
@@ -546,6 +642,7 @@ mysqli_close($conn);
                 ,'contact_tel_pat': $("#supContactTelPat").val()
                 ,'pat_sex': suppatSex
                 ,'status_car': statusCar
+                ,'status_travel': statusTravel
                 ,'pat_age': $("#patAge").val()
                 ,'reason': $("#supReason").val()
                 ,'pat_staff': $("#supPatStaff").val()
@@ -570,6 +667,7 @@ mysqli_close($conn);
                     $("#uiLoading").hide();
                     $("#supVali").empty();
                     $("#supVali").append("บันทึกข้อมูลเรียบร้อย");
+                    $("#btnSave").prop("disabled", true);
                 }
 //                    alert('bbbbb '+json_obj.length);
 //                    alert('ccccc '+$("#cDistrict").val());

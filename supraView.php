@@ -13,7 +13,7 @@ mysqli_set_charset($conn, "UTF8");
 $sql="Select sup.*, br.branch_name, ho.hosp_name_t "
     ."From t_supra sup "
     ."Left Join b_hospital  ho on ho.hosp_id = sup.hosp_id "
-    ."Left Join b_branch  br on br.branch_id = sup.branch_id "
+    ."Left Join b_branch  br on br.branch_code = sup.branch_code "
     ."Where sup.active = '1' ";
 //$result = mysqli_query($conn,$sql);
 if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){

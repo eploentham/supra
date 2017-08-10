@@ -104,13 +104,28 @@ if($_GET['flagPage']=="amphur"){
             array_push($resultArray,$tmp);
         }else{
             $ok="1";
+//            $q = urldecode($_GET["q"]);
+//            $q = $mysqli->real_escape_string($q);
+            $q="ก";
             $tmp = array();
             //$tmp["sql"] = $sql;
             //array_push($resultArray,$tmp);
             while($row = mysqli_fetch_array($result)){        
                 //$tmp["label"] = $row["prov_id"];
                 //$tmp["value"] = $row["prov_name"];
-                $tmp["name"] = $row["name"];
+                $tmp["name"] = $row["prov_name"];
+                
+                $name = trim($row["prov_name"]);// ตัดช่องวางหน้าหลัง
+                $name = addslashes($name); // ป้องกันรายการที่ ' ไม่ให้แสดง error
+                $name = htmlspecialchars($name); // ป้องกันอักขระพิเศษ
+
+                // กำหนดรูปแบบข้อความที่แใดงใน li ลิสรายการตัวเลือก
+                $display_name = preg_replace("/(" .$q. ")/i", "<b>$1</b>", $name);
+                echo "<li onselect=\"this.setText('$name').setValue('$id')\">$display_name </li>";  
+                
+                
+                
+                
 //                $tmp["adminName1"] = $row["adminName1"];
 //                $tmp["countryName"] = $row["countryName"];
                 array_push($resultArray,$tmp);
