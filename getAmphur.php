@@ -237,7 +237,22 @@ if($_GET['flagPage']=="amphur"){
         $result->free();
     }
 }else if($_GET['flagPage']=="get_hn"){
-    $sql="Select * From hn_t_data Where id = '".$_GET['pat_id']."'  ";
+    $sql="";
+    if(isset($_GET["pat_id"])){
+        if (strlen($_GET['pat_id']) >0) {
+            $sql="Select * From hn_t_data Where id = '".$_GET['pat_id']."'  ";
+        }else{
+            $sql="Select * From hn_t_data Where hn = '".$_GET['hn']."'  ";
+        }
+    }else if(isset($_GET["hn"])){
+        $sql="Select * From hn_t_data Where hn = '".$_GET['hn']."'  ";
+    }else{
+        $tmp = array();
+        $tmp["error"] = "no pat hn";
+        $tmp["sql"] = $sql;
+        array_push($resultArray,$tmp);
+    }
+    
     if ($result=mysqli_query($conn,$sql)){
         $ok="";
         $err="";
@@ -251,7 +266,7 @@ if($_GET['flagPage']=="amphur"){
         }else{
             $ok="1";
             $tmp = array();
-            $tmp["sql"] = $sql;
+            $tmp["sql"] = $sql." ".strlen($_GET['pat_id']);
             
             
             array_push($resultArray,$tmp);
@@ -264,9 +279,47 @@ if($_GET['flagPage']=="amphur"){
                 $tmp["fname"] = $row["fname"];
                 $tmp["lname"] = $row["lname"];
                 $tmp["hosp_code"] = $row["hosp_code"];
+                $tmp["id"] = trim($row["id"]);
+                $tmp["hn"] = trim($row["hn"]);
                 $tmp["age"] = $age;
                 array_push($resultArray,$tmp);
             }
+        }
+        $result->free();
+    }
+}else if($_GET['flagPage']=="cal_lab"){
+    $brId="";
+    $yearId="";
+    $monthId="";
+    $periodId="";
+    if(isset($_GET["branch_id"])){
+        $brId = $_GET["branch_id"];
+    }else{
+        $brId = "";
+    }
+    if(isset($_GET["year_id"])){
+        $yearId = $_GET["year_id"];
+    }else{
+        $yearId = "";
+    }
+    if(isset($_GET["month_id"])){
+        $monthId = $_GET["month_id"];
+    }else{
+        $monthId = "";
+    }
+    if(isset($_GET["period_id"])){
+        $periodId = $_GET["period_id"];
+    }else{
+        $periodId = "";
+    }
+    $where="Where branch_id = '".$brId."' and year_id = '".$yearId
+        ."' and month_id = '".$monthId."' and period_id = '".$periodId."'  and active = '1'";
+    
+    $sql = "Select * from lab_t_data  ".$where;
+    if ($result=mysqli_query($conn,$sql)){
+        while($row = mysqli_fetch_array($result)){
+//            if(strpos($row[""] .indexOf("outlab")>0 || (ltb_i.getItemCommonName().indexOf("Out lab")>0) ||
+//                        (ltb_i.getItemCommonName().indexOf("Out Lab")>0) || (ltb_i.getItemCommonName().indexOf("Outlab")>0)){
         }
         $result->free();
     }

@@ -132,9 +132,9 @@ if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
     $oBranch = "<option value='0' selected='' disabled=''>เลือก สาขา</option>";
     while($row = mysqli_fetch_array($result)){
         if($branchCode===$row["branch_code"]){
-            $oBranch .= '<option selected value='.$row["branch_code"].'>'.$row["branch_name"].'</option>';
+            $oBranch .= '<option selected value='.trim($row["branch_code"]).'>'.$row["branch_name"].'</option>';
         }else{
-            $oBranch .= '<option value='.$row["branch_code"].'>'.$row["branch_name"].'</option>';
+            $oBranch .= '<option value='.trim($row["branch_code"]).'>'.$row["branch_name"].'</option>';
         }
     }
 }else{
@@ -158,6 +158,16 @@ if ($result=mysqli_query($conn,$sql)){
     while($row = mysqli_fetch_array($result)){
         //$autoDoctor .= $row['doctor_name'];
         array_push($autoDoctor,$row['doctor_name']);
+        //$data[] = $row['skill'];
+    }
+    //$autoDoctor = substr($autoDoctor,0, strlen($autoDoctor)-1);
+}
+$sql="Select distinct pat_staff From t_supra Where active = '1'";
+$autoStaff = array();
+if ($result=mysqli_query($conn,$sql)){
+    while($row = mysqli_fetch_array($result)){
+        //$autoDoctor .= $row['doctor_name'];
+        array_push($autoStaff,$row['pat_staff']);
         //$data[] = $row['skill'];
     }
     //$autoDoctor = substr($autoDoctor,0, strlen($autoDoctor)-1);
@@ -245,11 +255,15 @@ mysqli_close($conn);
                                         <label class="label">เลขบัตรประชาชน</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
                                             <input type="text" name="supPatID" id="supPatID" value="<?php echo $supPatID;?>" placeholder="เลขบัตรประชาชน">
-                                        
                                     </section>
                                     <section class="col col-1">
                                         <label class="label">&nbsp;</label>
-                                        <button type="button" id="btnSearchHn" class="btn btn-primary">...</button>
+                                        <!--<button type="button" id="btnSearchHn" class="btn btn-primary">...</button>-->
+                                        <ul class="demo-btns">
+                                            <li id="btnSearchHn">
+                                                <a href="javascript:void(0);" class="btn bg-color-blue txt-color-white"><i id="loadingSearch" class="fa fa-gear fa-2x fa-spin"></i></a>
+                                            </li>
+                                        </ul>
                                     </section>
                                     <section class="col col-3">
                                         <label class="label">สิทธิ</label>
@@ -437,6 +451,11 @@ mysqli_close($conn);
                                         </button>
                                     </section>
                                     <section class="col col-3 ">
+                                        <button type="button" id="btnPrint" class="btn btn-primary">
+                                                Print
+                                        </button>
+                                    </section>
+                                    <section class="col col-3 ">
                                         <ul class="demo-btns">
                                             <li id="uiLoading">
                                                 <a href="javascript:void(0);" class="btn bg-color-blue txt-color-white"><i id="loading" class="fa fa-gear fa-2x fa-spin"></i></a>
@@ -459,7 +478,13 @@ mysqli_close($conn);
       source: availableTags
     });
   } );
-  </script>
+  $( function() {//$autoStaff
+    var availableTags =  <?php echo json_encode($autoStaff); ?>;
+    $( "#supPatStaff" ).autocomplete({
+      source: availableTags
+    });
+  } );
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         pageSetUp();
@@ -496,6 +521,7 @@ mysqli_close($conn);
         //$("#divDrg").hide();
         $("#chkSupraVoid").click(checkBtnVoid);
         $("#btnSupraVoid").click(voidSupra);
+        $("#loadingSearch").removeClass("fa-spin");
         hideBtnVoid();
         function checkBtnVoid(){
             if($("#chkSupraVoid").is(':checked'))
@@ -677,10 +703,10 @@ mysqli_close($conn);
     }
     function getHN(){
         //alert('aaaaa');
+        $("#loadingSearch").addClass("fa-spin");
         $.ajax({
             type: 'GET', url: 'getAmphur.php', contentType: "application/json", dataType: 'text', 
-            data: { 'pat_id': $("#supPatID").val()
-                ,'flagPage': "get_hn" }, 
+            data: { 'pat_id': $("#supPatID").val(),'hn': $("#supHN").val(),'flagPage': "get_hn" }, 
             success: function (data) {
 //                alert('bbbbb'+data);
                 var json_obj = $.parseJSON(data);
@@ -693,7 +719,7 @@ mysqli_close($conn);
                         $("#supBranch").val("000");
                     }else if(json_obj[i].hosp_code==="2211006"){
                         $("#supBranch").val("001");
-                    }else if(json_obj[i].hosp_code==="2211006"){
+                    }else if(json_obj[i].hosp_code==="2211041"){
                         $("#supBranch").val("002");
                     }
                     if(json_obj[i].pname==="นาง"){
@@ -703,6 +729,9 @@ mysqli_close($conn);
                         //alert("bbbb");
                         $("#supPatSex").attr('checked', true);                        
                     }
+                    $("#supHN").val(json_obj[i].hn);
+                    $("#supPatID").val(json_obj[i].id);
+                    $("#loadingSearch").removeClass("fa-spin");
                 }
 //                    alert('bbbbb '+json_obj.length);
 //                    alert('ccccc '+$("#cDistrict").val());
