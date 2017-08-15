@@ -517,6 +517,7 @@ mysqli_close($conn);
         $("#chkStatusTravel").prop("checked", <?php echo $supStatusTravel1?>);
         $("#supReason").val(<?php echo $reason?>);
         $("#btnSave").click(saveSupra);
+        $("#btnPrint").click(printSupra);
         $("#btnSearchHn").click(getHN);
         //$("#divDrg").hide();
         $("#chkSupraVoid").click(checkBtnVoid);
@@ -739,5 +740,7 @@ mysqli_close($conn);
             }
         });
     }
-    
+    function printSupra(){
+        window.location.assign("#supraPrint.php?supra_id="+$("#supId").val());
+    }
 </script>
