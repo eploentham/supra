@@ -49,6 +49,51 @@ function elog($log, $fn = "debug.log") {
     fputs($fp, "[".date("d-m-Y h:i:s")."][Log] $log\r\n");
     fclose($fp); 
 }
-
+function getMonthName($monthId){
+    if($monthId==="01"){
+        return "มกราคม";
+    }else if($monthId==="02"){
+        return "กุมภาพันธ์";
+    }else if($monthId==="03"){
+        return "มีนาคม";
+    }else if($monthId==="04"){
+        return "เมษายน";
+    }else if($monthId==="05"){
+        return "พฤษภาคม";
+    }else if($monthId==="06"){
+        return "มิถุนายน";
+    }else if($monthId==="07"){
+        return "กรกฎาคม";
+    }else if($monthId==="08"){
+        return "สิงหาคม";
+    }else if($monthId==="09"){
+        return "กันยายน";
+    }else if($monthId==="10"){
+        return "ตุลาคม";
+    }else if($monthId==="11"){
+        return "พฤศจิกายน";
+    }else if($monthId==="12"){
+        return "ธันวาคม";
+    } 
+}
+function getDayName($dayId){
+    if($dayId==2){
+        return "จันทร์";
+    }else if($dayId==3){
+        return "อังคาร";
+    }else if($dayId==4){
+        return "พุธ";
+    }else if($dayId==5){
+        return "พฤหัสบดี";
+    }else if($dayId==6){
+        return "ศุกร์";
+    }else if($dayId==7){
+        return "เสาร์";
+    }else if($dayId==1){
+        return "อาทิตย์";
+    }else{
+        return $dayId;
+    }
+}
 
 ?>

@@ -25,7 +25,6 @@ $remark="";
 $supraTypeId="";
 $supPaid="";
 $supHosp="";
-$supId="";
 $supBranch="";
 $supFlagNew="";
 $branchCode="";
