@@ -17,6 +17,7 @@ $diseased2="";
 $doctorName="";
 $staff="";
 $reason="";
+$paidT="";
 $now = getdate();
 $curDate1 = date("d-m-Y");
 $curTime = date("H:i");
@@ -80,6 +81,16 @@ if ($rComp=mysqli_query($conn,$sql)){
         }else{
             $brCode= "รหัสโรงพยาบาล  ".$aRec["branch_code"];
         }
+        if($aRec["paid_type_name"]==="2211041"){
+            $paidT = "โรงพยาบาล บางนา5";
+        }else if($aRec["paid_type_name"]==="2211006"){
+            $paidT = "โรงพยาบาล บางนา2";
+        }else if($aRec["paid_type_name"]==="2210028"){
+            $paidT = "โรงพยาบาล บางนา1";
+        }else{
+            $paidT = "โรงพยาบาล ไม่ระบุ";
+        }
+        
         
         $hosp = "ผู้รับ  ".$aRec["hosp_name_t"];
         $name = "ชื่อ – สกุล ".$aRec["pat_name"]." ".$aRec["pat_surname"];
@@ -97,7 +108,7 @@ if ($rComp=mysqli_query($conn,$sql)){
 }
 //$paid='<table width="100%"><tr></tr><td class="tdliner"><img src="img/checked.jpg" alt="me" >&nbsp;ประกันสังคม &nbsp;'.$br1.'</td><td class="tdliner"><img src="img/unchecked.jpg" alt="me" >&nbsp;กองทุน – บริษัท</td><td><img src="img/unchecked.jpg" alt="me" >&nbsp;ทั่วไป</td></tr>'
 //        . '<tr><td class="tdliner"><img src="img/unchecked.jpg" alt="me" >&nbsp;พรบ..............................</td><td class="tdliner"><img src="img/unchecked.jpg" alt="me" >&nbsp;ประกันสุขภาพ.........................</td><td><img src="img/unchecked.jpg" alt="me" >&nbsp;อื่น ๆ.........................</td></tr></table>';
-$paid='<table width="100%"><tr><td ><img src="img/checked.jpg" alt="me" >&nbsp;ประกันสังคม &nbsp;'.$br1.'</td><td ><img src="img/unchecked.jpg" alt="me" >&nbsp;กองทุน – บริษัท</td><td><img src="img/unchecked.jpg" alt="me" >&nbsp;ทั่วไป</td></tr>'
+$paid='<table width="100%"><tr><td ><img src="img/checked.jpg" alt="me" >&nbsp;ประกันสังคม &nbsp;'.$paidT.'</td><td ><img src="img/unchecked.jpg" alt="me" >&nbsp;กองทุน – บริษัท</td><td><img src="img/unchecked.jpg" alt="me" >&nbsp;ทั่วไป</td></tr>'
         . '<tr><td ><img src="img/unchecked.jpg" alt="me" >&nbsp;พรบ..............................</td><td ><img src="img/unchecked.jpg" alt="me" >&nbsp;ประกันสุขภาพ.........................</td><td><img src="img/unchecked.jpg" alt="me" >&nbsp;อื่น ๆ.........................</td></tr></table>';
 if(trim($sex)==="M"){
     $sex='เพศ &nbsp;<img src="img/checked.jpg" alt="me" >&nbsp;ชาย &nbsp;<img src="img/unchecked.jpg" alt="me" >&nbsp;หญิง ';
@@ -274,7 +285,7 @@ mysqli_close($conn);
         <div class="col col-sm-12">
             <table class="table table-striped table-bordered table-hover responsive"  width="100%">
                 <tbody>
-                    <tr><td align="left"><?php echo 'เลขที่ '.$doc;?></td><td align="right"><?php echo $txtDate1;?></td></tr>
+                    <tr><td align="left"><?php echo 'เลขที่ '.$doc;?></td><td align="right"><?php echo $txtDate;?></td></tr>
                 </tbody>
             </table>
         </div>
