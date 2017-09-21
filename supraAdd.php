@@ -188,7 +188,6 @@ mysqli_close($conn);
 	</div>
 	
 	<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-		
             <!-- Button trigger modal -->
             <a href="ajax/modal-content/model-content-2.html" data-toggle="modal" data-target="#remoteModal" class="btn btn-success btn-lg pull-right header-btn hidden-mobile">
                 <i class="fa fa-circle-arrow-up fa-lg"></i> 
@@ -202,7 +201,6 @@ mysqli_close($conn);
                 </div>
             </div>
             <!-- END MODAL -->
-		
 	</div>
 </div>
 <div class="alert alert-block alert-success" id="supAlert">

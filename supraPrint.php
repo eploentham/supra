@@ -181,6 +181,7 @@ mysqli_close($conn);
         }
         .tdTimes {font-family: 'times new roman'; font-size-adjust: 1;}
         .tdTimes1 {font-family: 'times new roman'; font-size-adjust: 0.68;}
+        .tdTimes2 {font-family: 'times new roman'; font-size-adjust: 0.50;}
         
         #Header, #Footer { display: none !important; }
         #header, #Footer,#left-panel,#shortcut,#smart-fixed-header, #smart-fixed-navigation,#smart-fixed-ribbon,#smart-fixed-footer,#smart-fixed-container,#smart-rtl { display: none !important; }
@@ -255,7 +256,7 @@ mysqli_close($conn);
                 <tr><td><img src="img/logo-b.png" alt="me" ></td>
                     <td><table><tr><td class="tdTimes">โรงพยาบาลทั่วไปขนาดใหญ่ บางนา 5 </td></tr>
                     <tr><td class="tdTimes1">BANGNA 5 GENERAL HOSPITAL</td></tr>
-                    <tr><td class="tdTimes1">55 หมู่ 4 ถ.เทพารักษ์ กม.10 ต.บางพลีใหญ่ อ.บางพลี จ.สมุทรปราการ 10540 Tel. 02138-1155-65 Fax.02138-1166</td></tr></table></td>
+                    <tr><td class="tdTimes2">55 หมู่ 4 ถ.เทพารักษ์ กม.10 ต.บางพลีใหญ่ อ.บางพลี จ.สมุทรปราการ 10540 Tel. 02138-1155-65 Fax.02138-1166</td></tr></table></td>
                 </tr>
             </table>
         </div>

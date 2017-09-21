@@ -35,6 +35,8 @@ if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
         }
         if($name==="" && $surname===""){
             $name = "ไม่มี ชื่อ-นามสกุล";
+        }else{
+            $name .= " ".$surname;
         }
         $brName="<a href='#supraAdd.php?supraId=".$row["supra_id"]."'>".$name."</a>";
         
