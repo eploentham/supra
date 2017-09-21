@@ -23,7 +23,9 @@ $curTime = date("H:i");
 $curMonth = getMonthName(date("m"));
 $curYear = date("Y");
 $curDate = date("d");
-$txtDate = "วันที่ ".$curDate." ".$curMonth." ".$curYear." เวลา ".$curTime." น.";
+$year1 = intval($curYear)+543;
+$txtDate = "วันที่ ".$curDate." ".$curMonth." ".$year1." เวลา ".$curTime." น.";
+$txtDate1 = "วันที่ ".$curDate." ".$curMonth." ".$year1;
 function getMonthName($monthId){
     if($monthId==="01"){
         return "มกราคม";
@@ -271,7 +273,7 @@ mysqli_close($conn);
         <div class="col col-sm-12">
             <table class="table table-striped table-bordered table-hover responsive"  width="100%">
                 <tbody>
-                    <tr><td align="left"><?php echo 'เลขที่ '.$doc;?></td><td align="right"><?php echo 'วันที่ '.$curDate1." ".$curTime;?></td></tr>
+                    <tr><td align="left"><?php echo 'เลขที่ '.$doc;?></td><td align="right"><?php echo $txtDate1;?></td></tr>
                 </tbody>
             </table>
         </div>
@@ -310,7 +312,12 @@ mysqli_close($conn);
     <table  width="100%">
         <tr><td align="left"><?php echo $diseased1;?></td><td align="right"><?php echo $diseased2;?></td></tr>
     </table>
-    <br><br>
+    <br>
+    <div class="row">
+        <div class="col col-sm-12 tdTimes1">
+            <?php echo $doctorName;?>
+        </div>
+    </div><br>
     <div class="row">
         <div class="col col-sm-12 tdTimes1">
             <?php echo $reason;?>

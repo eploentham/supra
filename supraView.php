@@ -12,8 +12,8 @@ $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 mysqli_set_charset($conn, "UTF8");
 $sql="Select sup.*, br.branch_name, ho.hosp_name_t "
     ."From t_supra sup "
-    ."Left Join b_hospital  ho on ho.hosp_id = sup.hosp_id "
-    ."Left Join b_branch  br on br.branch_code = sup.branch_code "
+    ."Left Join b_hospital ho on ho.hosp_id = sup.hosp_id "
+    ."Left Join b_branch br on br.branch_code = sup.branch_code "
     ."Where sup.active = '1' ";
 //$result = mysqli_query($conn,$sql);
 if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
@@ -21,11 +21,28 @@ if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
     while($row = mysqli_fetch_array($result)){
         $supraDate = ($row["supra_date"]);
         $supraDate = substr($supraDate,strlen($supraDate)-2)."-".substr($supraDate,5,2)."-".substr($supraDate,0,4);
-        $brName="<a href='#supraAdd.php?supraId=".$row["supra_id"]."'>".$row["pat_name"]." ".$row["pat_surname"]."</a>";
+        $name="";
+        $surname = "";
+        if($row["pat_name"]===""){
+            $name = "";
+        }else{
+            $name = $row["pat_name"];
+        }
+        if($row["pat_surname"]===""){
+            $surname = "";
+        }else{
+            $surname = $row["pat_surname"];
+        }
+        if($name==="" && $surname===""){
+            $name = "ไม่มี ชื่อ-นามสกุล";
+        }
+        $brName="<a href='#supraAdd.php?supraId=".$row["supra_id"]."'>".$name."</a>";
         
+//        $trCust .= "<tr><td>".$row["supra_doc"]."</td><td>".$row["supra_date"]."</td><td>".$brName."</td><td>".$row["hn"]."</td><td>".$row["branch_name"]
+//            ."</td><td>".$row["hosp_name_t"]."</td><td>".$row["contact_name_hosp"]." ".$row["contact_tele_hosp"]."</td><td>".$row["contact_name_pat"]." ".$row["contact_tele_pat"]
+//            ."</td><td>".$row["remark"]."</td><td>".$row["paid"]."</td><td>".$row["doctor_name"]."</td></tr>";
         $trCust .= "<tr><td>".$row["supra_doc"]."</td><td>".$row["supra_date"]."</td><td>".$brName."</td><td>".$row["hn"]."</td><td>".$row["branch_name"]
-            ."</td><td>".$row["hosp_name_t"]."</td><td>".$row["contact_name_hosp"]." ".$row["contact_tele_hosp"]."</td><td>".$row["contact_name_pat"]." ".$row["contact_tele_pat"]
-            ."</td><td>".$row["remark"]."</td><td>".$row["paid"]."</td><td>".$row["doctor_name"]."</td></tr>";
+            ."</td><td>".$row["hosp_name_t"]."</td><td>".$row["remark"]."</td><td>".$row["paid"]."</td><td>".$row["doctor_name"]."</td></tr>";
     }
 }else{
     echo mysqli_error($conn);
@@ -108,8 +125,8 @@ mysqli_close($conn);
                                         <th>HN</th>
                                         <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> โรงพยาบาลที่ส่งตัว</th>
                                         <th data-hide="phone,tablet">โรงพยาบาลที่รับ (Supra)</th>
-                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ติดต่อ โรงพยาบาล</th>
-                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ติดต่อ โรงพยาบาล (Supra)</th>
+                                        <!--<th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ติดต่อ โรงพยาบาล</th>
+                                        <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ชื่อผู้ติดต่อ โรงพยาบาล (Supra)</th>-->
                                         <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> หมายเหตุ</th>
                                         <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> ค่าใช้จ่าย</th>
                                         <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> แพทย์ผู้ส่งตัว</th>

@@ -288,12 +288,12 @@ mysqli_close($conn);
                                     <section class="col col-5">
                                         <label class="label">ชื่อผู้ป่วย</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="text" name="supPatName" id="supPatName" value="<?php echo $supPatName;?>" placeholder="ชื่อผู้ป่วย">
+                                            <input type="text" name="supPatName" id="supPatName" value="<?php echo $supPatName;?>" placeholder="ชื่อผู้ป่วย"></label>
                                     </section>
                                     <section class="col col-5">
                                         <label class="label">นามสกุล</label>
                                         <label class="input"> <i class="icon-append fa fa-user"></i>
-                                            <input type="text" name="supPatSurname" id="supPatSurname" value="<?php echo $supPatSurname;?>" placeholder="นามสกุล">
+                                            <input type="text" name="supPatSurname" id="supPatSurname" value="<?php echo $supPatSurname;?>" placeholder="นามสกุล"></label>
                                     </section>
 
                                     <section class="col col-2">
@@ -616,6 +616,17 @@ mysqli_close($conn);
             $("#supVali").append("วันที่ป้อน ไม่มีค่า");
             return;
         }
+        if($("#supPatName").val()==""){
+            $.alert({
+                title: 'Validate Patient Name',
+                content: 'ชื่อผู้ป่วย ไม่มีค่า',
+            });
+            $("#supAlert").show();
+            $("#supVali").empty();
+            $("#supVali").append("ชื่อผู้ป่วย ไม่มีค่า");
+            //$("#supPatName").addClass("alert-block");
+            return;
+        }
         if($("#supSupraDate").val()==""){
             $.alert({
                 title: 'Validate Data',
@@ -624,6 +635,7 @@ mysqli_close($conn);
             $("#supAlert").show();
             $("#supVali").empty();
             $("#supVali").append("วันที่สงตัว ไม่มีค่า");
+            //$("#supSupraDate").focus();
             return;
         }
         var suppatSex = "", statusCar="", statusTravel="";
