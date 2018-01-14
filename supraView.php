@@ -14,7 +14,8 @@ $sql="Select sup.*, br.branch_name, ho.hosp_name_t "
     ."From t_supra sup "
     ."Left Join b_hospital ho on ho.hosp_id = sup.hosp_id "
     ."Left Join b_branch br on br.branch_code = sup.branch_code "
-    ."Where sup.active = '1' ";
+    ."Where sup.active = '1' "
+    ."Order By sup.supra_date";
 //$result = mysqli_query($conn,$sql);
 if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
 //if($result){
@@ -49,42 +50,54 @@ if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
 }else{
     echo mysqli_error($conn);
 }
+$yearId="";
+$sql="Select distinct sup.year_id "
+    ."From t_supra sup "
+    ." "
+    ."Where sup.active = '1' "
+    ."Order By sup.year_id desc";
+//$result = mysqli_query($conn,$sql);
+if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
+    while($row = mysqli_fetch_array($result)){
+        $yearId .= "<option value=".$row["year_id"].">".$row["year_id"]."</option>";
+    }
+}
 $result->free();
 mysqli_close($conn);
 
 ?>
 <div class="row">
-	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-		<h1 class="page-title txt-color-blueDark">
-			<i class="fa fa-table fa-fw "></i> 
-				Table 
-			<span>> 
-				Data Tables
-			</span>
-		</h1>
-	</div>
-	<div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
-		<ul id="sparks" class="">
-			<li class="sparks-info">
-				<h5> My Income <span class="txt-color-blue">$47,171</span></h5>
-				<div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
-					1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471
-				</div>
-			</li>
-			<li class="sparks-info">
-				<h5> Site Traffic <span class="txt-color-purple"><i class="fa fa-arrow-circle-up" data-rel="bootstrap-tooltip" title="Increased"></i>&nbsp;45%</span></h5>
-				<div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
-					110,150,300,130,400,240,220,310,220,300, 270, 210
-				</div>
-			</li>
-			<li class="sparks-info">
-				<h5> Site Orders <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;2447</span></h5>
-				<div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
-					110,150,300,130,400,240,220,310,220,300, 270, 210
-				</div>
-			</li>
-		</ul>
-	</div>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <i class="fa fa-table fa-fw "></i> 
+                    Table 
+            <span>> 
+                    Data Tables
+            </span>
+        </h1>
+    </div>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+        <ul id="sparks" class="">
+            <li class="sparks-info">
+                <h5> My Income <span class="txt-color-blue">$47,171</span></h5>
+                <div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
+                        1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471
+                </div>
+            </li>
+            <li class="sparks-info">
+                <h5> Site Traffic <span class="txt-color-purple"><i class="fa fa-arrow-circle-up" data-rel="bootstrap-tooltip" title="Increased"></i>&nbsp;45%</span></h5>
+                <div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
+                        110,150,300,130,400,240,220,310,220,300, 270, 210
+                </div>
+            </li>
+            <li class="sparks-info">
+                <h5> Site Orders <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;2447</span></h5>
+                <div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
+                        110,150,300,130,400,240,220,310,220,300, 270, 210
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
 <!-- widget grid -->
 <section id="widget-grid" class="">
@@ -148,6 +161,13 @@ mysqli_close($conn);
                     <button type="button" class="btn btn-primary" id="btnSupAdd">
                                 เพิ่ม Supra
                     </button>
+                    
+                        <label class="label">ประจำปี</label>
+                        <label class="select" id="goType1">
+                            <select id="cboYear">
+                                <?php echo $yearId;?>
+                            </select> <i></i> </label>
+                    <section class="col col-3"></section>
                 </footer>
             </article>
             <!-- WIDGET END -->
@@ -239,11 +259,11 @@ mysqli_close($conn);
 					"t"+
 					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
 				"autoWidth" : true,
-				"preDrawCallback" : function() {
-					// Initialize the responsive datatables helper once.
-					if (!responsiveHelper_dt_basic) {
-						responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#dt_basic'), breakpointDefinition);
-					}
+				"preDrawCallback" : function(){
+                                    // Initialize the responsive datatables helper once.
+                                    if (!responsiveHelper_dt_basic) {
+                                            responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#dt_basic'), breakpointDefinition);
+                                    }
 				},
 				"rowCallback" : function(nRow) {
 					responsiveHelper_dt_basic.createExpandIcon(nRow);
@@ -278,7 +298,7 @@ mysqli_close($conn);
 			},
 			"drawCallback" : function(oSettings) {
 				responsiveHelper_datatable_fixed_column.respond();
-			}		
+			}
 		
 	    });
 	    
@@ -293,7 +313,7 @@ mysqli_close($conn);
 	            .search( this.value )
 	            .draw();
 	            
-	    } );
+	    });
 	    /* END COLUMN FILTER */   
     
 		/* COLUMN SHOW - HIDE */
@@ -344,34 +364,32 @@ mysqli_close($conn);
 	             ],
 	            "sSwfPath": "js/plugin/datatables/swf/copy_csv_xls_pdf.swf"
 	        },
-			"autoWidth" : true,
-			"preDrawCallback" : function() {
-				// Initialize the responsive datatables helper once.
-				if (!responsiveHelper_datatable_tabletools) {
-					responsiveHelper_datatable_tabletools = new ResponsiveDatatablesHelper($('#datatable_tabletools'), breakpointDefinition);
-				}
-			},
-			"rowCallback" : function(nRow) {
-				responsiveHelper_datatable_tabletools.createExpandIcon(nRow);
-			},
-			"drawCallback" : function(oSettings) {
-				responsiveHelper_datatable_tabletools.respond();
-			}
+                    "autoWidth" : true,
+                    "preDrawCallback" : function() {
+                            // Initialize the responsive datatables helper once.
+                            if (!responsiveHelper_datatable_tabletools) {
+                                    responsiveHelper_datatable_tabletools = new ResponsiveDatatablesHelper($('#datatable_tabletools'), breakpointDefinition);
+                            }
+                    },
+                    "rowCallback" : function(nRow) {
+                            responsiveHelper_datatable_tabletools.createExpandIcon(nRow);
+                    },
+                    "drawCallback" : function(oSettings) {
+                            responsiveHelper_datatable_tabletools.respond();
+                    }
 		});
 		
 		/* END TABLETOOLS */
 
 	};
-
-	// load related plugins
-	
+	// load related plugins	
 	loadScript("js/plugin/datatables/jquery.dataTables.min.js", function(){
             loadScript("js/plugin/datatables/dataTables.colVis.min.js", function(){
-                    loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function(){
-                        loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function(){
-                            loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
-                        });
+                loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function(){
+                    loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function(){
+                        loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
                     });
+                });
             });
 	});
         $("#btnSupAdd").click(showSupraAdd);
@@ -379,5 +397,4 @@ mysqli_close($conn);
             //alert("aaaa");
             window.location.assign('#supraAdd.php');
         }
-
 </script>

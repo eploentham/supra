@@ -134,13 +134,16 @@ if($_GET["flagPage"] === "company"){
                 ."Where hosp_id = '".$hosp_id."'";
     }
 }else if($_GET["flagPage"] === "supra"){
+    $yearId="";
+    $monthId="";
     $supra_id=$_GET["supra_id"];
     $supra_doc=$_GET["supra_doc"];
 //    $input_date=$_GET["input_date"];
 //    $supra_date=$_GET["supra_date"];
     $input_date=substr($_GET["input_date"],strlen($_GET["input_date"])-4)."-".substr($_GET["input_date"],3,2)."-".substr($_GET["input_date"],0,2);
     $supra_date=substr($_GET["supra_date"],strlen($_GET["supra_date"])-4)."-".substr($_GET["supra_date"],3,2)."-".substr($_GET["supra_date"],0,2);
-    
+    $yearId = substr($_GET["supra_date"],strlen($_GET["supra_date"])-4);
+    $monthId = substr($_GET["supra_date"],3,2);
     $hn=$_GET["hn"];
     $pat_id=$_GET["pat_id"];
     $paid_type_name=$_GET["paid_type_name"];
@@ -189,55 +192,57 @@ if($_GET["flagPage"] === "company"){
 //        }
 //    if(($_GET["vend_id"]==="-")|| ($_GET["vend_id"]==="")){
         $sql="Insert Into t_supra(supra_id, supra_doc, input_date, supra_date "
-                .", hn, pat_id, paid_type_name, supra_type_id "
-                .", pat_name, pat_surname, branch_code, hosp_id "
-                .", doctor_name, paid, remark, contact_name_hosp"
-                .", contact_tele_hosp,contact_name_pat,contact_tele_pat, status_car"
-                .", pat_sex, pat_age, reason, pat_staff"
-                . ", diseased1, diseased2, diseased3, diseased4"
-                . ", drg, on_top, status_travel, active, date_create) "
-                ."Values(UUID(),'".$supra_doc."','".$input_date."','".$supra_date."','"
-                .$hn."','".$pat_id."','".$paid_type_name."','".$supra_type_id."','"
-                .$pat_name."','".$pat_surname."','".$branch_id."','".$hosp_id."','"
-                .$doctor_name."','".$paid."','".$remark."','".$contact_name_hosp."','"
-                .$contact_tel_hosp."','".$contact_name_pat."','".$contact_tel_pat."','".$status_car."','"
-                .$pat_sex."','".$pat_age."','".$reason."','".$pat_staff."','"
-                .$diseased1."','".$diseased2."','".$diseased3."','".$diseased4."','"
-                .$drg."','".$on_top."','".$status_travel."','1',now())";
+            .", hn, pat_id, paid_type_name, supra_type_id "
+            .", pat_name, pat_surname, branch_code, hosp_id "
+            .", doctor_name, paid, remark, contact_name_hosp"
+            .", contact_tele_hosp,contact_name_pat,contact_tele_pat, status_car"
+            .", pat_sex, pat_age, reason, pat_staff"
+            . ", diseased1, diseased2, diseased3, diseased4"
+            . ", drg, on_top, status_travel,year_id, month_id, active, date_create) "
+            ."Values(UUID(),'".$supra_doc."','".$input_date."','".$supra_date."','"
+            .$hn."','".$pat_id."','".$paid_type_name."','".$supra_type_id."','"
+            .$pat_name."','".$pat_surname."','".$branch_id."','".$hosp_id."','"
+            .$doctor_name."','".$paid."','".$remark."','".$contact_name_hosp."','"
+            .$contact_tel_hosp."','".$contact_name_pat."','".$contact_tel_pat."','".$status_car."','"
+            .$pat_sex."','".$pat_age."','".$reason."','".$pat_staff."','"
+            .$diseased1."','".$diseased2."','".$diseased3."','".$diseased4."','"
+            .$drg."','".$on_top."','".$status_travel."','".$yearId."','".$monthId."','1',now())";
     }else{
         $sql="Update t_supra "
-                ."Set supra_doc = '".$supra_doc."' "
-                .", input_date = '".$input_date."' "
-                .", supra_date = '".$supra_date."' "
-                .", hn = '".$hn."' "
-                .", pat_id = '".$pat_id."' "
-                .", paid_type_name = '".$paid_type_name."' "
-                .", supra_type_id = '".$supra_type_id."' "
-                .", pat_name = '".$pat_name."' "
-                .", pat_surname = '".$pat_surname."' "
-                .", branch_code = '".$branch_id."' "
-                .", hosp_id = '".$hosp_id."' "
-                .", doctor_name = '".$doctor_name."' "
-                .", paid = ".$paid." "
-                .", remark = '".$remark."' "
-                .", contact_name_hosp = '".$contact_name_hosp."' "
-                .", contact_tele_hosp = '".$contact_tel_hosp."' "
-                .", contact_name_pat = '".$contact_name_pat."' "
-                .", contact_tele_pat = '".$contact_tel_pat."' "
-                .", status_car = '".$status_car."' "
-                .", pat_sex = '".$pat_sex."' "
-                .", pat_age = '".$pat_age."' "
-                .", reason = '".$reason."' "
-                .", pat_staff = '".$pat_staff."' "
-                .", diseased1 = '".$diseased1."' "
-                .", diseased2 = '".$diseased2."' "
-                .", diseased3 = '".$diseased3."' "
-                .", diseased4 = '".$diseased4."' "
-                .", drg = '".$drg."' "
-                .", on_top = '".$on_top."' "
-                .", status_travel = '".$status_travel."' "
-                .", date_modi = now() "
-                ."Where supra_id = '".$supra_id."'";
+            ."Set supra_doc = '".$supra_doc."' "
+            .", input_date = '".$input_date."' "
+            .", supra_date = '".$supra_date."' "
+            .", hn = '".$hn."' "
+            .", pat_id = '".$pat_id."' "
+            .", paid_type_name = '".$paid_type_name."' "
+            .", supra_type_id = '".$supra_type_id."' "
+            .", pat_name = '".$pat_name."' "
+            .", pat_surname = '".$pat_surname."' "
+            .", branch_code = '".$branch_id."' "
+            .", hosp_id = '".$hosp_id."' "
+            .", doctor_name = '".$doctor_name."' "
+            .", paid = ".$paid." "
+            .", remark = '".$remark."' "
+            .", contact_name_hosp = '".$contact_name_hosp."' "
+            .", contact_tele_hosp = '".$contact_tel_hosp."' "
+            .", contact_name_pat = '".$contact_name_pat."' "
+            .", contact_tele_pat = '".$contact_tel_pat."' "
+            .", status_car = '".$status_car."' "
+            .", pat_sex = '".$pat_sex."' "
+            .", pat_age = '".$pat_age."' "
+            .", reason = '".$reason."' "
+            .", pat_staff = '".$pat_staff."' "
+            .", diseased1 = '".$diseased1."' "
+            .", diseased2 = '".$diseased2."' "
+            .", diseased3 = '".$diseased3."' "
+            .", diseased4 = '".$diseased4."' "
+            .", drg = '".$drg."' "
+            .", on_top = '".$on_top."' "
+            .", status_travel = '".$status_travel."' "
+            .", year_id = '".$yearId."' "
+            .", month_id = '".$monthId."' "
+            .", date_modi = now() "
+            ."Where supra_id = '".$supra_id."'";
     }
 }else if($_GET["flagPage"] === "goodsType"){
     $goods_type_id=$_GET["goods_type_id"];
@@ -246,39 +251,39 @@ if($_GET["flagPage"] === "company"){
 
     if(($_GET["goods_type_id"]==="-")|| ($_GET["goods_type_id"]==="")){
         $sql="Insert Into b_goods_type(goods_type_id, goods_type_name, active, date_create) "
-                ."Values(UUID(),'".$goods_type_name."','1',now())";
+            ."Values(UUID(),'".$goods_type_name."','1',now())";
     }else{
         $sql="Update b_goods_type "
-                ."Set  "
-                ." goods_type_name = '".$goods_type_name."' "                
-                .", date_modi = now() "
-                ."Where goods_type_id = '".$goods_type_id."'";
+            ."Set  "
+            ." goods_type_name = '".$goods_type_name."' "                
+            .", date_modi = now() "
+            ."Where goods_type_id = '".$goods_type_id."'";
     }
 }else if($_GET["flagPage"] === "goodsCatagory"){
     $goods_cat_id=$_GET["goods_cat_id"];
     $goods_cat_name=$_GET["goods_cat_name"];
     if(($_GET["goods_cat_id"]==="-")|| ($_GET["goods_cat_id"]==="")){
         $sql="Insert Into b_goods_catagory(goods_cat_id, goods_cat_name, active, date_create) "
-                ."Values(UUID(),'".$goods_cat_name."','1',now())";
+            ."Values(UUID(),'".$goods_cat_name."','1',now())";
     }else{
         $sql="Update b_goods_catagory "
-                ."Set  "
-                ." goods_cat_name = '".$goods_cat_name."' "                
-                .", date_modi = now() "
-                ."Where goods_cat_id = '".$goods_cat_id."'";
+            ."Set  "
+            ." goods_cat_name = '".$goods_cat_name."' "                
+            .", date_modi = now() "
+            ."Where goods_cat_id = '".$goods_cat_id."'";
     }
 }else if($_GET["flagPage"] === "unit"){
     $unit_id=$_GET["unit_id"];
     $unit_name=$_GET["unit_name"];
     if(($_GET["unit_id"]==="-")|| ($_GET["unit_id"]==="")){
         $sql="Insert Into b_unit(unit_id, unit_name, active, date_create) "
-                ."Values(UUID(),'".$unit_name."','1',now())";
+            ."Values(UUID(),'".$unit_name."','1',now())";
     }else{
         $sql="Update b_unit "
-                ."Set  "
-                ." unit_name = '".$unit_name."' "                
-                .", date_modi = now() "
-                ."Where unit_id = '".$unit_id."'";
+            ."Set  "
+            ." unit_name = '".$unit_name."' "                
+            .", date_modi = now() "
+            ."Where unit_id = '".$unit_id."'";
     }
 }else if($_GET["flagPage"] === "goods"){
     $goods_id=$_GET["goods_id"];
@@ -300,36 +305,36 @@ if($_GET["flagPage"] === "company"){
     $barcode=$_GET["barcode"];
     if(($_GET["goods_id"]==="-")|| ($_GET["goods_id"]==="")){
         $sql="Insert Into b_goods(goods_id, goods_code, goods_name, goods_name_ex, "
-                ."price, cost, holes, side, "
-                ."dia_meter, length, unit_id, goods_type_id, "
-                ."goods_cat_id, goods_code_ex, purchase_point, purchase_period, "
-                ."barcode, active, date_create) "
-                ."Values(UUID(),'".$goods_code."','".$goods_name."','".$goods_name_ex."','"
-                .$price."','".$cost."','".$holes."','".$side."','"
-                .$dia_meter."','".$length."','".$unit_id."','".$goods_type_id."','"
-                .$goods_cat_id."','".$goods_code_ex."',".$purchase_point.",".$purchase_period.",'"
-                .$barcode."','1',now())";
+            ."price, cost, holes, side, "
+            ."dia_meter, length, unit_id, goods_type_id, "
+            ."goods_cat_id, goods_code_ex, purchase_point, purchase_period, "
+            ."barcode, active, date_create) "
+            ."Values(UUID(),'".$goods_code."','".$goods_name."','".$goods_name_ex."','"
+            .$price."','".$cost."','".$holes."','".$side."','"
+            .$dia_meter."','".$length."','".$unit_id."','".$goods_type_id."','"
+            .$goods_cat_id."','".$goods_code_ex."',".$purchase_point.",".$purchase_period.",'"
+            .$barcode."','1',now())";
     }else{
         $sql="Update b_goods "
-                ."Set  "
-                ." goods_code = '".$goods_code."' "
-                .", goods_code_ex = '".$goods_code_ex."' "
-                .", goods_name = '".$goods_name."' "
-                .", goods_name_ex = '".$goods_name_ex."' "
-                .", goods_type_id = '".$goods_type_id."' "
-                .", goods_cat_id = '".$goods_cat_id."' "
-                .", price = ".$price." "
-                .", cost = ".$cost." "
-                .", holes = '".$holes."' "
-                .", side = '".$side."' "
-                .", dia_meter = '".$dia_meter."' "
-                .", length = '".$length."' "
-                .", unit_id = '".$unit_id."' "
-                .", purchase_point = ".$purchase_point." "
-                .", purchase_period = ".$purchase_period." "
-                .", barcode = '".$barcode."' "
-                .", date_modi = now() "
-                ."Where goods_id = '".$goods_id."'";
+            ."Set  "
+            ." goods_code = '".$goods_code."' "
+            .", goods_code_ex = '".$goods_code_ex."' "
+            .", goods_name = '".$goods_name."' "
+            .", goods_name_ex = '".$goods_name_ex."' "
+            .", goods_type_id = '".$goods_type_id."' "
+            .", goods_cat_id = '".$goods_cat_id."' "
+            .", price = ".$price." "
+            .", cost = ".$cost." "
+            .", holes = '".$holes."' "
+            .", side = '".$side."' "
+            .", dia_meter = '".$dia_meter."' "
+            .", length = '".$length."' "
+            .", unit_id = '".$unit_id."' "
+            .", purchase_point = ".$purchase_point." "
+            .", purchase_period = ".$purchase_period." "
+            .", barcode = '".$barcode."' "
+            .", date_modi = now() "
+            ."Where goods_id = '".$goods_id."'";
     }
 }else if($_GET["flagPage"] === "goods_rec"){
     $rec_id=$_GET["rec_id"];
@@ -366,25 +371,25 @@ if($_GET["flagPage"] === "company"){
             $doc = "RE".$year. substr($cnt, strlen($cnt)-5);
         }
         $sql="Insert Into t_goods_rec(rec_id, rec_doc, inv_ex, description, "
-                ."rec_date, inv_ex_date, comp_id, vend_id, "
-                ."branch_id, remark, status_stock, active, date_create) "
-                ."Values('".$rec_id."','".$doc."','".$inv_ex."','".$description."','"
-                .$rec_date."','".$inv_ex_date."','".$comp_id."','".$vend_id."','"
-                .$branch_id."','".$remark."','0','1',now())";
+            ."rec_date, inv_ex_date, comp_id, vend_id, "
+            ."branch_id, remark, status_stock, active, date_create) "
+            ."Values('".$rec_id."','".$doc."','".$inv_ex."','".$description."','"
+            .$rec_date."','".$inv_ex_date."','".$comp_id."','".$vend_id."','"
+            .$branch_id."','".$remark."','0','1',now())";
     }else{
         $sql="Update t_goods_rec "
-                ."Set  "
-                ." inv_ex = '".$inv_ex."' "
+            ."Set  "
+            ." inv_ex = '".$inv_ex."' "
 //                .", rec_doc = '".$rec_doc."' "
-                .", description = '".$description."' "
-                .", rec_date = '".$rec_date."' "
-                .", inv_ex_date = '".$inv_ex_date."' "
-                .", comp_id = '".$comp_id."' "
-                .", vend_id = '".$vend_id."' "
-                .", branch_id = '".$branch_id."' "
-                .", remark = '".$remark."' "
-                .", date_modi = now() "
-                ."Where rec_id = '".$rec_id."'";
+            .", description = '".$description."' "
+            .", rec_date = '".$rec_date."' "
+            .", inv_ex_date = '".$inv_ex_date."' "
+            .", comp_id = '".$comp_id."' "
+            .", vend_id = '".$vend_id."' "
+            .", branch_id = '".$branch_id."' "
+            .", remark = '".$remark."' "
+            .", date_modi = now() "
+            ."Where rec_id = '".$rec_id."'";
     }
 }else if($_GET["flagPage"] === "goods_rec_detail"){
     $rec_detail_id=$_GET["rec_detail_id"];
@@ -416,26 +421,26 @@ if($_GET["flagPage"] === "company"){
     }
     if(($_GET["rec_detail_id"]==="-")|| ($_GET["rec_detail_id"]==="")){
         $sql="Insert Into t_goods_rec_detail(rec_detail_id, rec_id, goods_id, price, "
-                ."cost, qty, amount, unit_id, "
-                ."remark, status_stock, active, date_create) "
-                ."Values(UUID(),'".$rec_id."','".$goods_id."','".$price."','"
-                .$cost."','".$qty."','".$amt."','".$unit_id."','"
-                .$remark."','0','1',now())";
+            ."cost, qty, amount, unit_id, "
+            ."remark, status_stock, active, date_create) "
+            ."Values(UUID(),'".$rec_id."','".$goods_id."','".$price."','"
+            .$cost."','".$qty."','".$amt."','".$unit_id."','"
+            .$remark."','0','1',now())";
 //        $sql="Insert Into t_goods_rec_detail(rec_detail_id, active, date_create) "
 //                ."Values(UUID(),'1',now())";
     }else{
         $sql="Update t_goods_rec_detail "
-                ."Set  "
-                ." rec_id = '".$rec_id."' "
-                .", goods_id = '".$goods_id."' "
-                .", price = '".$price."' "
-                .", cost = '".$cost."' "
-                .", qty = '".$qty."' "
-                .", amount = '".$amount."' "
-                .", unit_id = '".$unit_id."' "
-                .", remark = '".$remark."' "
-                .", date_modi = now() "
-                ."Where rec_detail_id = '".$rec_detail_id."'";
+            ."Set  "
+            ." rec_id = '".$rec_id."' "
+            .", goods_id = '".$goods_id."' "
+            .", price = '".$price."' "
+            .", cost = '".$cost."' "
+            .", qty = '".$qty."' "
+            .", amount = '".$amount."' "
+            .", unit_id = '".$unit_id."' "
+            .", remark = '".$remark."' "
+            .", date_modi = now() "
+            ."Where rec_detail_id = '".$rec_detail_id."'";
     }
 }else if($_GET["flagPage"] === "rec_detail_void"){
     $rec_detail_id=$_GET["rec_detail_id"];
