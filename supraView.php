@@ -8,15 +8,21 @@ if (!isset($_SESSION['bn_user_staff_name'])) {
 }
 $trCust="";
 $supraDate="";
+$cboYear=$_GET["cboYear"];
+$whereYear="";
+if($cboYear!=""){
+    $whereYear = " and sup.year_id = '".$cboYear."' ";
+}
 $conn = mysqli_connect($hostDB,$userDB,$passDB,$databaseName);
 mysqli_set_charset($conn, "UTF8");
 $sql="Select sup.*, br.branch_name, ho.hosp_name_t "
     ."From t_supra sup "
     ."Left Join b_hospital ho on ho.hosp_id = sup.hosp_id "
     ."Left Join b_branch br on br.branch_code = sup.branch_code "
-    ."Where sup.active = '1' "
-    ."Order By sup.supra_date";
+    ."Where sup.active = '1' ".$whereYear
+    ." Order By sup.supra_date desc ";
 //$result = mysqli_query($conn,$sql);
+//echo $sql;
 if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
 //if($result){
     while($row = mysqli_fetch_array($result)){
@@ -48,7 +54,9 @@ if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
             ."</td><td>".$row["hosp_name_t"]."</td><td>".$row["remark"]."</td><td>".$row["paid"]."</td><td>".$row["doctor_name"]."</td></tr>";
     }
 }else{
+    //echo $sql;
     echo mysqli_error($conn);
+    
 }
 $yearId="";
 $sql="Select distinct sup.year_id "
@@ -59,7 +67,11 @@ $sql="Select distinct sup.year_id "
 //$result = mysqli_query($conn,$sql);
 if ($result=mysqli_query($conn,$sql) or die(mysqli_error($conn))){
     while($row = mysqli_fetch_array($result)){
-        $yearId .= "<option value=".$row["year_id"].">".$row["year_id"]."</option>";
+        if($cboYear===$row["year_id"]){
+            $yearId .= "<option selected value=".$row["year_id"].">".$row["year_id"]."</option>";
+        }else{
+            $yearId .= "<option value=".$row["year_id"].">".$row["year_id"]."</option>";
+        }
     }
 }
 $result->free();
@@ -67,7 +79,7 @@ mysqli_close($conn);
 
 ?>
 <div class="row">
-    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-2">
         <h1 class="page-title txt-color-blueDark">
             <i class="fa fa-table fa-fw "></i> 
                     Table 
@@ -76,6 +88,7 @@ mysqli_close($conn);
             </span>
         </h1>
     </div>
+    
     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
         <ul id="sparks" class="">
             <li class="sparks-info">
@@ -103,6 +116,20 @@ mysqli_close($conn);
 <section id="widget-grid" class="">
 	<!-- row -->
 	<div class="row">
+            <form class="smart-form">
+                <fieldset>
+                    <section class="col col-6">
+                        <label class="txt-color-blue">ประจำปี</label>
+                        <label class="select" id="goType1">
+                        <select id="cboYear">
+                            <?php echo $yearId;?>
+                        </select> <i></i> </label>
+                    </section>
+                    <section class="col col-6">
+                        
+                    </section>
+                </fieldset>
+            </form>  
             <!-- NEW WIDGET START -->
             <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <!-- Widget ID (each widget will need unique ID)-->
@@ -162,11 +189,9 @@ mysqli_close($conn);
                                 เพิ่ม Supra
                     </button>
                     
-                        <label class="label">ประจำปี</label>
-                        <label class="select" id="goType1">
-                            <select id="cboYear">
-                                <?php echo $yearId;?>
-                            </select> <i></i> </label>
+                              
+                    
+                        
                     <section class="col col-3"></section>
                 </footer>
             </article>
@@ -393,8 +418,12 @@ mysqli_close($conn);
             });
 	});
         $("#btnSupAdd").click(showSupraAdd);
+        $("#cboYear").change(refreshPage);
         function showSupraAdd(){
             //alert("aaaa");
             window.location.assign('#supraAdd.php');
+        }
+        function refreshPage(){
+            location.assign('#supraView.php?cboYear='+$("#cboYear").val());
         }
 </script>
